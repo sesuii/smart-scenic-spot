@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * 生成和解析 jwt
  *
- * @author <a href="mailto: sjiahui@gmail.com">songjiahui</a>
+ * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/5 13:16
  **/
 public class JwtUtil {
@@ -37,7 +37,7 @@ public class JwtUtil {
                 .setIssuedAt(now)
                 .setSubject(subject)
                 .setExpiration(new Date(nowMillis + SecurityConstant.TOKEN_EXPIRE_TIME))
-                .signWith(SignatureAlgorithm.HS256, SecurityConstant.SECRET_KEY);
+                .signWith(SignatureAlgorithm.HS256, SecurityConstant.JWT_SECRET_KEY);
         return builder.compact();
     }
 
@@ -50,7 +50,7 @@ public class JwtUtil {
      */
     public static Claims parseJWT(String token) {
         return Jwts.parser()
-                .setSigningKey(SecurityConstant.SECRET_KEY)
+                .setSigningKey(SecurityConstant.JWT_SECRET_KEY)
                 .parseClaimsJws(token).getBody();
     }
 }

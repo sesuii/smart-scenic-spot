@@ -1,5 +1,6 @@
 package com.smartscenicspot.domain.resp;
 
+import com.smartscenicspot.constant.ResultEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,4 +17,26 @@ public class Result<T> {
     int code;
     String msg;
     T data;
+
+    public Result(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public static Result<?> success() {
+        return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage());
+    }
+
+    public static Result<?> success(Object obj) {
+        return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage(), obj);
+    }
+
+    public static Result<?> failed(ResultEnum resultEnum) {
+        return new Result<>(resultEnum.getCode(), resultEnum.getMessage());
+    }
+
+    public static Result<?> failed(ResultEnum resultEnum, Object obj) {
+        return new Result<>(resultEnum.getCode(), resultEnum.getMessage(), obj);
+    }
+
 }

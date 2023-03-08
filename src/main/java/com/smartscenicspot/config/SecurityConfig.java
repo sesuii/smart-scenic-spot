@@ -2,8 +2,8 @@ package com.smartscenicspot.config;
 
 import com.smartscenicspot.auth.WeChatAuthenticationFilter;
 import com.smartscenicspot.auth.WeChatAuthenticationProvider;
+import com.smartscenicspot.filter.AuthenticationFilter;
 import com.smartscenicspot.service.Impl.AdminDetailServiceImpl;
-import com.smartscenicspot.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 /**
  * SpringSecurity 配置
  *
- * @author <a href="mailto: sjiahui@gmail.com">songjiahui</a>
+ * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/6 10:53
  **/
 @Configuration
@@ -31,13 +31,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AdminDetailServiceImpl adminDetailService;
 
     @Resource
-    private UserService userService;
+    private AuthenticationFilter authenticationFilter;
 
+    @Resource
+    WeChatAuthenticationProvider weChatAuthenticationProvider;
+
+    @Resource
+    WeChatAuthenticationFilter weChatAuthenticationFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(adminDetailService).passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(weChatAuthenticationProvider());
+        auth.authenticationProvider(weChatAuthenticationProvider);
     }
 
     @Override
@@ -45,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("admin/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -54,9 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(weChatAuthenticationProvider())
-                .addFilterBefore(weChatAuthenticationFilter(),
+                .authenticationProvider(weChatAuthenticationProvider)
+                .addFilterBefore(weChatAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter,
+                        WeChatAuthenticationFilter.class)
         ;
     }
 
@@ -71,12 +77,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public WeChatAuthenticationFilter weChatAuthenticationFilter() {
-        return new WeChatAuthenticationFilter();
-    }
-    @Bean
-    public WeChatAuthenticationProvider weChatAuthenticationProvider() {
-        return new WeChatAuthenticationProvider(userService);
-    }
 }
