@@ -2,38 +2,51 @@ package com.smartscenicspot.auth;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 
 /**
  * 微信用户 Token
  *
- * @author <a href="mailto: sjiahui@gmail.com">songjiahui</a>
+ * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/6 20:22
  **/
 public class WeChatAuthenticationToken extends AbstractAuthenticationToken {
 
-    private final Object principal;
+    private static final long serialVersionUID = 560L;
+    private final String openid;
 
-    public WeChatAuthenticationToken(Object principal) {
-        super((null));
-        this.principal = principal;
-        super.setAuthenticated(false);
+    private String sessionKey;
+
+    public WeChatAuthenticationToken(String openid, String sessionKey) {
+        super(null);
+        this.openid = openid;
+        this.sessionKey = sessionKey;
     }
-
-    public WeChatAuthenticationToken(Collection<? extends GrantedAuthority> authorities, Object principal) {
+    public WeChatAuthenticationToken(String openid, String sessionKey, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.principal = principal;
-        super.setAuthenticated(true);
+        this.openid = openid;
+        this.sessionKey = sessionKey;
+        this.setAuthenticated(true);
     }
 
     @Override
     public Object getCredentials() {
-        return null;
+        return sessionKey;
     }
 
     @Override
     public Object getPrincipal() {
-        return this.principal;
+        return this.openid;
+    }
+
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        Assert.isTrue(!isAuthenticated, "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
+        super.setAuthenticated(false);
+    }
+
+    public void eraseCredentials() {
+        super.eraseCredentials();
     }
 }

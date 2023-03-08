@@ -2,9 +2,7 @@ package com.smartscenicspot.service;
 
 import com.smartscenicspot.domain.User;
 import com.smartscenicspot.repository.UserRepository;
-import com.smartscenicspot.vo.WeChatUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,10 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDetails getByOpenid(String openid) {
-        User user = userRepository.getUserByOpenid(openid);
-        return WeChatUserVo.builder()
-                .openid(user.getOpenid())
-                .build();
+    public User getByOpenid(String openid) {
+        return userRepository.getUserByOpenid(openid);
     }
 }

@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 /**
  * 实现 UserDetailService
  *
- * @author <a href="mailto: sjiahui@gmail.com">songjiahui</a>
+ * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/6 20:57
  **/
 @Service

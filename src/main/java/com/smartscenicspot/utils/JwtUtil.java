@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * 生成和解析 jwt
  *
- * @author <a href="mailto: sjiahui@gmail.com">songjiahui</a>
+ * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/5 13:16
  **/
 public class JwtUtil {

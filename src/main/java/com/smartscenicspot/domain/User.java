@@ -12,7 +12,7 @@ import javax.persistence.*;
  **/
 
 @Entity
-@Table
+@Table(name = "s_user")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,17 +20,18 @@ import javax.persistence.*;
 public class User {
     @Id
     @SequenceGenerator(
-            name = "user_sequence",
+            name = "user_generator",
             sequenceName = "user_sequence",
             allocationSize = 1,
             initialValue = 1000
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "user_generator"
     )
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String openid;
 
     private String role;
