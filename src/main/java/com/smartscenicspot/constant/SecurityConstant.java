@@ -32,4 +32,21 @@ public class SecurityConstant {
 
     public static final String WECHAT_SECRET = "879dbc2095dfe0452003c208f3279eb4";
 
+    /**
+     * T
+     */
+    public static final String SECURITY_HEADER = "Authentication";
+
+    /**
+     * Token 头部前缀
+     */
+    public static final String SECURITY_HEADER_PREFIX = "Bearer ";
+
+    public static final String WECHAT_APPID = "";
+
+    public static final String WECHAT_SECRET = "";
+
+    public static final String WECHAT_GRANT_TYPE = "";
+
+
 }
