@@ -1,5 +1,7 @@
 package com.smartscenicspot.controller;
 
+import com.smartscenicspot.constant.ResultEnum;
+import com.smartscenicspot.domain.Admin;
 import com.smartscenicspot.domain.resp.Result;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.vo.AdminVo;
@@ -24,9 +26,18 @@ public class AuthController {
     @Resource
     AdminService adminService;
 
+    @PostMapping(value = "/adminregister")
+    public Result<?> adminRegister(@RequestBody AdminVo adminVo) {
+        Admin admin = adminService.createAccount(adminVo);
+        return null;
+    }
+
     @PostMapping(value = "/adminlogin")
     public Result<?> adminLogin(@RequestBody AdminVo adminVo) {
         Map<String, String> token = adminService.toLogin(adminVo);
+        if(token == null) {
+            return Result.failed(ResultEnum.AUTHORITY_FAILED);
+        }
         return Result.success(token);
     }
 

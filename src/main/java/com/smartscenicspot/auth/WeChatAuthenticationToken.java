@@ -2,6 +2,7 @@ package com.smartscenicspot.auth;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.Collection;

@@ -26,7 +26,7 @@ import java.io.IOException;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Resource
-    RedisTemplate<String, String> redisTemplate;
+    RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 在过滤链最前端拦截携带 JWT 的请求，并且进行验证。
@@ -48,7 +48,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
         String token = securityHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
         String account = JwtUtil.parseJWT(token).getSubject();
-        String storedToken = redisTemplate.opsForValue()
+        String storedToken = (String)redisTemplate.opsForValue()
                 .get(RedisConstant.USER_PREFIX + account);
         if(!token.equals(storedToken)) {
             try {

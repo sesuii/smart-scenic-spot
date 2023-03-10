@@ -36,8 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     WeChatAuthenticationProvider weChatAuthenticationProvider;
 
-    @Resource
-    WeChatAuthenticationFilter weChatAuthenticationFilter;
+    @Bean
+    public WeChatAuthenticationFilter weChatAuthenticationFilter() {
+        return new WeChatAuthenticationFilter();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -59,10 +61,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(weChatAuthenticationProvider)
-                .addFilterBefore(weChatAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authenticationFilter,
-                        WeChatAuthenticationFilter.class)
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(weChatAuthenticationFilter(),
+                        AuthenticationFilter.class)
         ;
     }
 

@@ -54,7 +54,6 @@ public class WeChatAuthenticationFilter extends AbstractAuthenticationProcessing
         }
 
         String code = this.obtainCode(request);
-
         if(code == null) {
             code = "";
         }
