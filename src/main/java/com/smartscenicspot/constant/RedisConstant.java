@@ -15,5 +15,5 @@ public class RedisConstant {
     /**
      * Token 存活时间
      */
-    public static final int TOKEN_EXPIRE_TIME = 1000 * 3600 * 6;
+    public static final int TOKEN_EXPIRE_TIME = 3600 * 6;
 }

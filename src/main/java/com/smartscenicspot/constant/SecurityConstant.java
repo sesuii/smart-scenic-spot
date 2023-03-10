@@ -21,7 +21,9 @@ public class SecurityConstant {
     /**
      * Token Header
      */
-    public static final String SECURITY_HEADER = "Authentication";
+    public static final String SECURITY_HEADER = "authorization";
+
+    public static final String ADMIN_LABEL = "ADMIN_";
 
     /**
      * Token 头部前缀
