@@ -34,7 +34,6 @@ public class AttractionVo implements Serializable {
     private Byte status;
     private String openNote;
     private String statusMsg;
-    private Long parentId;
 
     public void setStatusMsg(Byte status) {
         if(status == ShowplaceConstant.SHOWPLACE_OPEN) {

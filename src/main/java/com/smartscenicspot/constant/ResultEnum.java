@@ -19,8 +19,8 @@ public enum ResultEnum {
     SUCCESS(200, "SUCCESS"),
     FAILED(500, "服务端异常"),
 
-    AUTHORITY_FAILED(5001, "该用户不存在！")
-    ;
+    AUTHORITY_FAILED(5001, "该用户不存在！"),
+    NOT_FOUND(404, "数据不存在");
 
     private int code;
     private String message;

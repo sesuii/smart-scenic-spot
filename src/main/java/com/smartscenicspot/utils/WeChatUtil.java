@@ -9,7 +9,8 @@ import org.springframework.web.client.RestTemplate;
  * @since 2023/3/12 18:27
  **/
 public class WeChatUtil {
-    private static RestTemplate restTemplate;
+    private static RestTemplate restTemplate = new RestTemplate();
+
 
     private static final String WECHAT_AUTH_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
             "appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
@@ -25,7 +26,6 @@ public class WeChatUtil {
         if(openid == null || sessionKey == null) {
             return null;
         }
-        // TODO 根据 sessionKey 更新用户个人信息
         return openid;
     }
 

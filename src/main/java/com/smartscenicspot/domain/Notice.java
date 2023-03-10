@@ -21,8 +21,15 @@ public class Notice extends AuditModel{
     private Date publishTime;
 
     @NotBlank
-    @Column(name = "subject", columnDefinition = "text")
+    @Column(name = "subject", columnDefinition = "varchar(100)")
     private String subject;
+
+    @NotBlank
+    @Column(name = "content", columnDefinition = "text")
+    private String content;
+
+    @Column(name = "type", columnDefinition = "varchar(50)")
+    private String type;
 
     /**
      * 0 表示景区公告，1 表示群组公告

@@ -38,6 +38,18 @@ public class Staff extends AuditModel {
     @Column(columnDefinition = "decimal(10,6)")
     private Double latitude;
 
+    @Column(columnDefinition = "varchar(100)")
+    private String address;
+
+    /**
+     * 职责描述
+     */
+    @Column(columnDefinition = "varchar(100)")
+    private String responsibility;
+
+    /**
+     * 入职时间
+     */
     @Temporal(TemporalType.DATE)
     private Date entryTime;
 

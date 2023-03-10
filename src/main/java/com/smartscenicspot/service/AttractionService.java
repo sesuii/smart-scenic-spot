@@ -1,19 +1,20 @@
 package com.smartscenicspot.service;
 
-import com.smartscenicspot.domain.Attraction;
 import com.smartscenicspot.dto.AttractionDto;
+import com.smartscenicspot.dto.AttractionUpdateDto;
 import com.smartscenicspot.vo.AttractionVo;
-
-import java.util.List;
+import com.smartscenicspot.vo.PageVo;
 
 /**
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/23 22:48
  **/
 public interface AttractionService {
-    AttractionDto getDTOById(Long id);
+    AttractionDto getDtoById(Long id);
 
-    public boolean addNewAttraction(AttractionVo attractionVo);
+    boolean addNewAttraction(AttractionVo attractionVo);
 
-    public List<AttractionDto> convertToAttractionList(List<Attraction> attractions);
+    PageVo<?> getAllDtos(int page, int size);
+
+    boolean updateInfo(Long id, AttractionUpdateDto updateDto);
 }

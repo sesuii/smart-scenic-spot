@@ -25,6 +25,9 @@ public class AttractionServiceTest {
     @Resource
     AttractionService attractionService;
 
+    @Test
+    void getAllTest() {
+    }
 
     @Test
     @Transactional
@@ -47,7 +50,6 @@ public class AttractionServiceTest {
                 .score(4.8)
                 .status((byte) 1)
                 .amrt(30)
-                .parentId(8L)
                 .build();
         boolean saved = attractionService.addNewAttraction(attractionVo);
         assert saved;

@@ -2,8 +2,8 @@ package com.smartscenicspot.domain;
 
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 景点信息类
@@ -18,7 +19,8 @@ import java.util.Map;
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/21 21:51
  **/
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_attraction")
@@ -64,6 +66,9 @@ public class Attraction extends  AuditModel{
     @Column(name = "score", columnDefinition = "decimal(10,2) default 3.5")
     private Double score;
 
+    @Column(name = "price", columnDefinition = "decimal(10,2) default 0")
+    private double price;
+
     @Column(columnDefinition = "int4 default 0")
     private Integer capacity;
     /**
@@ -79,10 +84,12 @@ public class Attraction extends  AuditModel{
     private String openNote;
 
     @OneToMany(mappedBy = "attraction")
+    @ToString.Exclude
     private List<Staff> staffs;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
+    @ToString.Exclude
     private Showplace showplace;
 
 }

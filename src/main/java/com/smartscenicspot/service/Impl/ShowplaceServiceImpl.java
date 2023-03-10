@@ -3,6 +3,7 @@ package com.smartscenicspot.service.Impl;
 import com.smartscenicspot.constant.ShowplaceConstant;
 import com.smartscenicspot.domain.Showplace;
 import com.smartscenicspot.dto.ShowplaceDto;
+import com.smartscenicspot.mapper.ShowplaceMapper;
 import com.smartscenicspot.repository.ShowplaceRepository;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.service.ShowplaceService;
@@ -69,10 +70,7 @@ public class ShowplaceServiceImpl implements ShowplaceService {
         if(null == showplace) {
             return null;
         }
-        ShowplaceDto showplaceDTO = new ShowplaceDto();
-        BeanUtils.copyProperties(showplace, showplaceDTO);
-        showplaceDTO.setAttractions(attractionService.convertToAttractionList(showplace.getAttractions()));
-        return showplaceDTO;
+        return ShowplaceMapper.INSTANCE.toDto(showplace);
     }
 
     private List<Double> calcSquareScope(double lat, double lng) {

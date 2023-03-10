@@ -1,15 +1,14 @@
 package com.smartscenicspot.controller;
 
+import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.ResultEnum;
-import com.smartscenicspot.domain.Admin;
-import com.smartscenicspot.vo.ResultVo;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.vo.AdminVo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.smartscenicspot.vo.Result;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -30,28 +29,33 @@ public class AuthController {
     @Resource
     UserService userService;
 
-    @PostMapping(value = "/adminregister")
-    public ResultVo<?> adminRegister(@RequestBody AdminVo adminVo) {
-        Admin admin = adminService.createAccount(adminVo);
-        return ResultVo.success(admin);
-    }
+    @Resource
+    RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping(value = "/adminlogin")
-    public ResultVo<?> adminLogin(@RequestBody AdminVo adminVo) {
+    public Result<?> adminLogin(@RequestBody AdminVo adminVo) {
         Map<String, String> token = adminService.toAdminLogin(adminVo);
         if(token == null) {
-            return ResultVo.failed(ResultEnum.AUTHORITY_FAILED);
+            return Result.failed(ResultEnum.AUTHORITY_FAILED);
         }
-        return ResultVo.success(token);
+        return Result.success(token);
     }
 
     @PostMapping(value = "/wechatlogin")
-    public ResultVo<?> weChatLogin(@RequestBody String code) {
-        Map<String, String> token = userService.toWeChatLogin(code);
+    public Result<?> weChatLogin(@RequestBody Map<String, String> code) {
+        Map<String, String> token = userService.toWeChatLogin(code.get("code"));
         if(token == null) {
-            return ResultVo.failed(ResultEnum.AUTHORITY_FAILED);
+            return Result.failed(ResultEnum.AUTHORITY_FAILED);
         }
-        return ResultVo.success(token);
+        return Result.success(token);
     }
 
+
+    @GetMapping(value = "/logout")
+    public Result<?> logout() {
+        String account = (String) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        redisTemplate.opsForValue().getAndDelete(RedisConstant.USER_PREFIX + account);
+        return Result.success("LOGOUT SUCCESS");
+    }
 }

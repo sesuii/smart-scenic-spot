@@ -20,8 +20,7 @@ import java.util.Collections;
 @Builder
 public class AdminVo implements UserDetails {
 
-    private String account;
-
+    private String username;
     private String password;
 
 
@@ -37,7 +36,7 @@ public class AdminVo implements UserDetails {
 
     @Override
     public String getUsername() {
-        return account;
+        return username;
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.domain.Admin;
-import com.smartscenicspot.service.AdminService;
+import com.smartscenicspot.repository.AdminRepository;
 import com.smartscenicspot.vo.AdminVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 实现 UserDetailService
@@ -18,17 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminDetailServiceImpl implements UserDetailsService {
 
-    @Autowired
-    AdminService adminService;
+    @Resource
+    AdminRepository adminRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
-        Admin admin = adminService.getOneByAccount(account);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Admin admin = adminRepository.findAdminByAccount(username).orElse(null);
         if(admin == null) {
             throw new UsernameNotFoundException("该用户不存在");
         }
         return AdminVo.builder()
-                .account(admin.getAccount())
+                .username(admin.getAccount())
                 .password(admin.getPassword())
                 .build();
     }

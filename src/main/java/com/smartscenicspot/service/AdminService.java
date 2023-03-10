@@ -1,6 +1,6 @@
 package com.smartscenicspot.service;
 
-import com.smartscenicspot.domain.Admin;
+import com.smartscenicspot.dto.AdminDto;
 import com.smartscenicspot.vo.AdminVo;
 
 import java.util.Map;
@@ -13,8 +13,7 @@ public interface AdminService {
 
     Map<String, String> toAdminLogin(AdminVo adminVo);
 
-    Admin createAccount(AdminVo adminVo);
+    boolean createAccount(AdminDto adminDto);
 
-    Admin getOneByAccount(String account);
-
+    AdminDto getAdminInfo();
 }

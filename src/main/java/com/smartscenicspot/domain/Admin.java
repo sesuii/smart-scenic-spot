@@ -1,7 +1,9 @@
 package com.smartscenicspot.domain;
 
 import com.vladmihalcea.hibernate.type.basic.Inet;
-import lombok.*;
+import com.vladmihalcea.hibernate.type.basic.PostgreSQLInetType;
+import lombok.Data;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 
@@ -14,13 +16,20 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_admin")
-@NoArgsConstructor
 @Data
+@TypeDef(
+        name = "ipv4",
+        typeClass = PostgreSQLInetType.class,
+        defaultForType = Inet.class
+)
 public class Admin extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "varchar(100)")
+    private String avatar;
 
     @Column(nullable = false, unique = true, columnDefinition = "varchar(50)")
     private String account;
@@ -31,11 +40,21 @@ public class Admin extends AuditModel {
     @Column(nullable = false, columnDefinition = "varchar(50)")
     private String name;
 
+    @Column(columnDefinition = "varchar(50)")
+    private String roles;
+
+    @Column
+    private String introduction;
+
     @Column(name = "last_active_ip", columnDefinition = "inet")
     private Inet lastActiveIp;
 
     @OneToOne
     @JoinColumn(name = "showplace_id")
     private Showplace showplace;
+
+    public void setLastActiveIp(String lastActiveIp) {
+        this.lastActiveIp = new Inet(lastActiveIp);
+    }
 
 }

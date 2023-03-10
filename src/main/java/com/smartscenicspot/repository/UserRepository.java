@@ -3,14 +3,15 @@ package com.smartscenicspot.repository;
 import com.smartscenicspot.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/6 21:03
  **/
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User getUserByOpenid(String openid);
+    Optional<User> findUserByOpenid(String openid);
 
     boolean existsUserByOpenid(String openid);
-
 }

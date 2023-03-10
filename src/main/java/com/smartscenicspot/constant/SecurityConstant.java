@@ -32,7 +32,7 @@ public class SecurityConstant {
 
     public static final String WECHAT_APPID = "wx28b9909abf667f2f";
 
-    public static final String WECHAT_SECRET = "879dbc2095dfe0452003c208f3279eb4";
+    public static final String WECHAT_SECRET = "7991c862cf01f5d3cc9015280347d539";
 
 
 }

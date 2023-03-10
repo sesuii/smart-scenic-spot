@@ -3,15 +3,18 @@ package com.smartscenicspot.service.Impl;
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.domain.Admin;
+import com.smartscenicspot.dto.AdminDto;
+import com.smartscenicspot.mapper.AdminMapper;
 import com.smartscenicspot.repository.AdminRepository;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.vo.AdminVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -21,18 +24,14 @@ import java.util.concurrent.TimeUnit;
  **/
 @Service
 public class AdminServiceImpl implements AdminService {
-    @Autowired
+    @Resource
     RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
+    @Resource
     AdminRepository adminRepository;
 
-    public Admin getOneByAccount(String account) {
-        return adminRepository.getAdminByAccount(account);
-    }
-
     public Map<String, String> toAdminLogin(AdminVo adminVo) {
-        Admin admin = getOneByAccount(adminVo.getAccount());
+        Admin admin = adminRepository.findAdminByAccount(adminVo.getUsername()).orElse(null);
         if(admin == null) {
             return null;
         }
@@ -44,8 +43,19 @@ public class AdminServiceImpl implements AdminService {
                 SecurityConstant.SECURITY_HEADER_PREFIX + token);
     }
 
-    public Admin createAccount(AdminVo adminVo) {
+    public boolean createAccount(AdminDto adminDto) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return null;
+        Admin admin = AdminMapper.INSTANCE.adminDtoToAdmin(adminDto);
+        admin.setPassword(encoder.encode(adminDto.getPassword()));
+        adminRepository.save(admin);
+        return true;
+    }
+
+    @Override
+    public AdminDto getAdminInfo() {
+        String account = (String) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        Admin admin = adminRepository.findAdminByAccount(account).orElse(null);
+        return AdminMapper.INSTANCE.adminToAdminDto(admin);
     }
 }

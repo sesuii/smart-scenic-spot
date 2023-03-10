@@ -7,10 +7,10 @@ import com.smartscenicspot.repository.UserRepository;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.utils.WeChatUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -21,14 +21,11 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    UserRepository userRepository;
 
-    public User getByOpenid(String openid) {
-        return userRepository.getUserByOpenid(openid);
-    }
+    @Resource
+    UserRepository userRepository;
 
     /**
      * 从 Security 中拿出经过 WeChatAuthenticationProvider 验证的 openid
@@ -37,24 +34,14 @@ public class UserServiceImpl implements UserService {
      * @return token
      */
     public Map<String, String> toWeChatLogin(String code) {
-        // ====测试用户登录，不获取openid========
-        if(code.startsWith("test_")) {
-            User user = getByOpenid(code);
-            String token = JwtUtil.createJWT(code);
-            redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX + code,
-                    token, RedisConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
-            return Map.of(SecurityConstant.SECURITY_HEADER,
-                    SecurityConstant.SECURITY_HEADER_PREFIX + token);
-        }
-        // ==================================
-
-        String openid = WeChatUtil.jscode2session(code);
+        // ==== 测试用户登录为 test 前缀，不获取 openid ======
+        String openid = code.startsWith("test_") ? code : WeChatUtil.jscode2session(code);
         if(openid == null) {
             return null;
         }
-        User user = getByOpenid(openid);
+        User user = userRepository.findUserByOpenid(openid).orElse(null);
         if(user == null) {
-            createUser(openid);
+            return null;
         }
         String token = JwtUtil.createJWT(openid);
         redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX + openid,
@@ -63,7 +50,4 @@ public class UserServiceImpl implements UserService {
                 SecurityConstant.SECURITY_HEADER_PREFIX + token);
     }
 
-    public void createUser(String openid) {
-
-    }
 }

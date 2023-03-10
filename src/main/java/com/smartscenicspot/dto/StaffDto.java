@@ -5,25 +5,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Attraction} entity
+ * A DTO for the {@link com.smartscenicspot.domain.Staff} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AttractionDto implements Serializable {
+public class StaffDto implements Serializable {
     private Long id;
-    @NotBlank
+    @Size(max = 50)
     private String name;
+    private Byte status;
     private String address;
     private String tel;
-    private String category;
-    private Double score;
-    private Integer amrt;
-    private String openNote;
-    private Long parentId;
+    private String responsibility;
+    private Date entryTime;
 }

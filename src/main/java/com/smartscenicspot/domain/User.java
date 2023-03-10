@@ -1,10 +1,10 @@
 package com.smartscenicspot.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户类
@@ -16,7 +16,10 @@ import java.util.Date;
 @Entity
 @Table(name = "tb_user")
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class User extends AuditModel {
 
     @Id
@@ -51,10 +54,15 @@ public class User extends AuditModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showplace_id")
+    @ToString.Exclude
     private Showplace showplace;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
+    @ToString.Exclude
     private TourGroup tourGroup;
 
+    @ManyToMany
+    @ToString.Exclude
+    private List<Attraction> attractionList;
 }

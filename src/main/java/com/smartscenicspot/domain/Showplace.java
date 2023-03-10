@@ -1,7 +1,8 @@
 package com.smartscenicspot.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,8 +16,9 @@ import java.util.List;
  **/
 @Entity
 @Table(name = "tb_showplace")
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Showplace extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

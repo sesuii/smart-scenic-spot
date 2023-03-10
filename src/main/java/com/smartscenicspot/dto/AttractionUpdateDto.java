@@ -15,15 +15,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AttractionDto implements Serializable {
-    private Long id;
+public class AttractionUpdateDto implements Serializable {
     @NotBlank
     private String name;
-    private String address;
-    private String tel;
-    private String category;
-    private Double score;
-    private Integer amrt;
+    @NotBlank
+    private String introduction;
+
+    private Byte status;
     private String openNote;
-    private Long parentId;
+    private double price;
 }
