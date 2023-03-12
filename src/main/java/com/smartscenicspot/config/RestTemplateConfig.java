@@ -2,8 +2,6 @@ package com.smartscenicspot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -26,7 +24,6 @@ public class RestTemplateConfig {
         restTemplate.getMessageConverters().set(1,
                 new StringHttpMessageConverter(StandardCharsets.UTF_8));
         return restTemplate;
-
     }
 
     @Bean

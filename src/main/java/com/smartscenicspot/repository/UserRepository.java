@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User getUserByOpenid(String openid);
+
+    boolean existsUserByOpenid(String openid);
 }

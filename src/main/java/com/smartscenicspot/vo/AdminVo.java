@@ -3,9 +3,11 @@ package com.smartscenicspot.vo;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 景区管理者展示层对象
@@ -25,7 +27,7 @@ public class AdminVo implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
     }
 
     @Override

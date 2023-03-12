@@ -1,7 +1,5 @@
 package com.smartscenicspot.config;
 
-import com.smartscenicspot.auth.WeChatAuthenticationFilter;
-import com.smartscenicspot.auth.WeChatAuthenticationProvider;
 import com.smartscenicspot.filter.AuthenticationFilter;
 import com.smartscenicspot.service.Impl.AdminDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * SpringSecurity 配置
@@ -33,18 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private AuthenticationFilter authenticationFilter;
 
-    @Resource
-    WeChatAuthenticationProvider weChatAuthenticationProvider;
-
-    @Bean
-    public WeChatAuthenticationFilter weChatAuthenticationFilter() {
-        return new WeChatAuthenticationFilter();
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(adminDetailService).passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(weChatAuthenticationProvider);
     }
 
     @Override
@@ -52,20 +45,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
-//                FIXME 暂时关闭 cors
-                .cors().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(weChatAuthenticationProvider)
                 .addFilterBefore(authenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(weChatAuthenticationFilter(),
-                        AuthenticationFilter.class)
         ;
+    }
+
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("authorization", "content-type"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**", config);
+        return corsConfigurationSource;
     }
 
     @Bean
@@ -75,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 
 }

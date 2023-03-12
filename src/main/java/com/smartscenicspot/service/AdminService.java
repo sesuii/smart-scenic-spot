@@ -8,7 +8,6 @@ import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.vo.AdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,16 +36,15 @@ public class AdminService {
         return adminRepository.getAdminByAccount(account);
     }
 
-    public Map<String, String> toLogin(AdminVo adminVo) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(adminVo.getUsername(), adminVo.getPassword());
-        Admin admin = getOneByAccount((String) authenticationToken.getPrincipal());
+    public Map<String, String> toAdminLogin(AdminVo adminVo) {
+        Admin admin = getOneByAccount(adminVo.getAccount());
         if(admin == null) {
             return null;
         }
         String token = JwtUtil.createJWT(admin.getAccount());
         redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX + admin.getAccount(),
-                token, RedisConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+                SecurityConstant.ADMIN_LABEL + token,
+                RedisConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return Map.of(SecurityConstant.SECURITY_HEADER,
                 SecurityConstant.SECURITY_HEADER_PREFIX + token);
     }
