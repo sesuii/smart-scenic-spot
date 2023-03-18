@@ -2,11 +2,14 @@ package com.smartscenicspot.controller;
 
 import com.smartscenicspot.constant.ResultEnum;
 import com.smartscenicspot.domain.Admin;
-import com.smartscenicspot.domain.resp.Result;
+import com.smartscenicspot.vo.ResultVo;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.vo.AdminVo;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -28,27 +31,27 @@ public class AuthController {
     UserService userService;
 
     @PostMapping(value = "/adminregister")
-    public Result<?> adminRegister(@RequestBody AdminVo adminVo) {
+    public ResultVo<?> adminRegister(@RequestBody AdminVo adminVo) {
         Admin admin = adminService.createAccount(adminVo);
-        return Result.success(admin);
+        return ResultVo.success(admin);
     }
 
     @PostMapping(value = "/adminlogin")
-    public Result<?> adminLogin(@RequestBody AdminVo adminVo) {
+    public ResultVo<?> adminLogin(@RequestBody AdminVo adminVo) {
         Map<String, String> token = adminService.toAdminLogin(adminVo);
         if(token == null) {
-            return Result.failed(ResultEnum.AUTHORITY_FAILED);
+            return ResultVo.failed(ResultEnum.AUTHORITY_FAILED);
         }
-        return Result.success(token);
+        return ResultVo.success(token);
     }
 
     @PostMapping(value = "/wechatlogin")
-    public Result<?> weChatLogin(@RequestBody String code) {
+    public ResultVo<?> weChatLogin(@RequestBody String code) {
         Map<String, String> token = userService.toWeChatLogin(code);
         if(token == null) {
-            return Result.failed(ResultEnum.AUTHORITY_FAILED);
+            return ResultVo.failed(ResultEnum.AUTHORITY_FAILED);
         }
-        return Result.success(token);
+        return ResultVo.success(token);
     }
 
 }

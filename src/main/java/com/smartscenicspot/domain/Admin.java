@@ -1,5 +1,6 @@
 package com.smartscenicspot.domain;
 
+import com.vladmihalcea.hibernate.type.basic.Inet;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,32 +13,29 @@ import javax.persistence.*;
  **/
 
 @Entity
-@Table(name = "s_admin")
-@Getter
-@Setter
-@AllArgsConstructor
+@Table(name = "tb_admin")
 @NoArgsConstructor
-@Builder
-public class Admin {
+@Data
+public class Admin extends AuditModel {
+
     @Id
-    @SequenceGenerator(
-            name = "admin_generator",
-            sequenceName = "admin_sequence",
-            allocationSize = 1,
-            initialValue = 1000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "admin_generator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "varchar(50)")
     private String account;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(100)")
     private String password;
 
-    private String role;
+    @Column(nullable = false, columnDefinition = "varchar(50)")
+    private String name;
+
+    @Column(name = "last_active_ip", columnDefinition = "inet")
+    private Inet lastActiveIp;
+
+    @OneToOne
+    @JoinColumn(name = "showplace_id")
+    private Showplace showplace;
 
 }

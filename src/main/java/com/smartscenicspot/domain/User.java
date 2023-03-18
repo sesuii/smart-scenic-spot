@@ -1,8 +1,10 @@
 package com.smartscenicspot.domain;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 用户类
@@ -12,29 +14,47 @@ import javax.persistence.*;
  **/
 
 @Entity
-@Table(name = "s_user")
-@Getter
-@Setter
-@AllArgsConstructor
+@Table(name = "tb_user")
 @NoArgsConstructor
-@Builder
-public class User {
+@Data
+public class User extends AuditModel {
+
     @Id
-    @SequenceGenerator(
-            name = "user_generator",
-            sequenceName = "user_sequence",
-            allocationSize = 1,
-            initialValue = 1000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_generator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String openid;
 
-    private String role;
+    @Column(columnDefinition = "varchar(100)")
+    private String avatar;
+
+    @Column(columnDefinition = "varchar(50)")
+    private String phone;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
+
+    @Column(columnDefinition = "varchar(20)")
+    private String gender;
+
+    @Column(columnDefinition = "decimal(10,6)")
+    private Double longitude;
+
+    @Column(columnDefinition = "decimal(10,6)")
+    private Double latitude;
+
+    private String address;
+
+    @Column(name = "status", columnDefinition = "smallint default 0")
+    private Byte status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "showplace_id")
+    private Showplace showplace;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private TourGroup tourGroup;
 
 }
