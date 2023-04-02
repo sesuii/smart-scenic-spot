@@ -1,6 +1,6 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.domain.Staff;
+import com.smartscenicspot.pojo.Staff;
 import com.smartscenicspot.mapper.StaffMapper;
 import com.smartscenicspot.repository.StaffRepository;
 import com.smartscenicspot.service.StaffService;

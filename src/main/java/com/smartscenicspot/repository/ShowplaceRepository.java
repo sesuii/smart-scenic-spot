@@ -1,6 +1,6 @@
 package com.smartscenicspot.repository;
 
-import com.smartscenicspot.domain.Showplace;
+import com.smartscenicspot.pojo.Showplace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

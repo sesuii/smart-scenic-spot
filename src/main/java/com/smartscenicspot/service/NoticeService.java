@@ -13,4 +13,10 @@ public interface NoticeService {
     PageVo<?> getAllDtos(int page, int size);
 
     boolean addNewNotice(NoticeDto noticeDto);
+
+    boolean broadCast(NoticeDto noticeDto);
+
+    PageVo<?> getGroupNoticeDtos(int page, int size);
+
+    boolean publishGroupNotice(NoticeDto noticeDto);
 }

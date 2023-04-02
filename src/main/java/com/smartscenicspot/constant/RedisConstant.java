@@ -16,4 +16,9 @@ public class RedisConstant {
      * Token 存活时间
      */
     public static final int TOKEN_EXPIRE_TIME = 3600 * 6;
+
+    /**
+     * websocket key
+     */
+    public static final String USER_OPENID = "uid";
 }

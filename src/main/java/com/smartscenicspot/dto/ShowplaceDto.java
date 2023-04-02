@@ -1,5 +1,6 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.vo.AttractionVo;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -7,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Showplace} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Showplace} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,5 +27,5 @@ public class ShowplaceDto implements Serializable {
     private String category;
     private Double score;
     private Byte status;
-    private List<AttractionDto> attractions;
+    private List<AttractionVo> attractions;
 }

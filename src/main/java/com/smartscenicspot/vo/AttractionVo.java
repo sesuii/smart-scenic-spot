@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Attraction} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Attraction} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +17,7 @@ import java.util.Map;
 @Setter
 @Builder
 public class AttractionVo implements Serializable {
+    private Long id;
     @NotBlank
     private String name;
     private String address;
@@ -33,13 +34,15 @@ public class AttractionVo implements Serializable {
     private Integer amrt;
     private Byte status;
     private String openNote;
+    private double price;
     private String statusMsg;
+    private Long parentId;
 
-    public void setStatusMsg(Byte status) {
-        if(status == ShowplaceConstant.SHOWPLACE_OPEN) {
+    public void setStatusMsg() {
+        if(this.status == ShowplaceConstant.SHOWPLACE_OPEN) {
             this.statusMsg = ShowplaceConstant.OPEN_MSG;
         }
-        else if(status == ShowplaceConstant.SHOWPLACE_CLOSE) {
+        else if(this.status == ShowplaceConstant.SHOWPLACE_CLOSE) {
             this.statusMsg = ShowplaceConstant.CLOSE_MSG;
         }
         else {

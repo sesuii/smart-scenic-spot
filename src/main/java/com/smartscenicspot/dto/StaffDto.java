@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Staff} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Staff} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

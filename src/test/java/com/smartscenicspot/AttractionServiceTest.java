@@ -36,7 +36,7 @@ public class AttractionServiceTest {
         List<Map<String, String>> infrastructure = new ArrayList<>();
         infrastructure.add(Map.of("厕所", "3"));
         AttractionVo attractionVo = AttractionVo.builder()
-                .name("白鹿洞书院")
+                .name("慈航寺")
                 .address("海会镇环山公路27号")
                 .longitude(116.041881)
                 .latitude(29.517095)
@@ -45,11 +45,12 @@ public class AttractionServiceTest {
                 .category("风景名胜;")
                 .infrastructure(infrastructure)
                 .tel("0792-8296565")
-                .introduction("白鹿洞书院位于五老峰东南，始建于公元940年，全院山地面积为3000亩，建筑面积为3800平方米。书院山环水合，幽静清邃，是中国重点文物保护单位。")
+                .introduction("慈航寺坐北朝南，建于山腰，背依秀美的盖州城北第一高峰老青山，东、西、北三面环山，南临虎斗马峪水库，山峰叠翠，水波潋滟。慈航寺现为辽宁省重要的宗教活动场所之一。")
                 .capacity(800)
                 .score(4.8)
                 .status((byte) 1)
                 .amrt(30)
+                .price(10)
                 .build();
         boolean saved = attractionService.addNewAttraction(attractionVo);
         assert saved;

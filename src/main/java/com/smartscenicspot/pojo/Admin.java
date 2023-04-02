@@ -1,4 +1,4 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import com.vladmihalcea.hibernate.type.basic.Inet;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLInetType;

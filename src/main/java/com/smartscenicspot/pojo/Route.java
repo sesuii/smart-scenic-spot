@@ -1,4 +1,4 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import javax.persistence.*;
 

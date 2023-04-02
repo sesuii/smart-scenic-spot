@@ -40,6 +40,4 @@ public class ShowplaceController {
         return Result.success(showplaceDTO);
     }
 
-
-
 }

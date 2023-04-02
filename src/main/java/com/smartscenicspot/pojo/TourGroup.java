@@ -1,4 +1,4 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,14 +36,17 @@ public class TourGroup extends AuditModel {
     @Column(columnDefinition = "decimal(10,6)")
     private Double latitude;
 
-    @Column(name = "group_size", columnDefinition = "int4 default 0")
+    @Column(name = "group_size", columnDefinition = "int4 default 50")
     private Integer groupSize;
 
-    @Column(name = "group_limit_size", columnDefinition = "int4 default 20")
+    @Column(name = "group_limit_size", columnDefinition = "int4 default 100")
     private Integer groupLimitSize;
 
     @Column(name = "status", columnDefinition = "smallint default 1")
     private Byte status;
+
+    @Column(name = "invite_code", columnDefinition = "varchar(20)")
+    private String inviteCode;
 
     @OneToOne
     private User creator;

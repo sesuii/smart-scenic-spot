@@ -3,6 +3,7 @@ package com.smartscenicspot.filter;
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.utils.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,7 +52,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String token = securityHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
-        String account = JwtUtil.parseJWT(token).getSubject();
+        String account;
+            try {
+                account = JwtUtil.parseJWT(token).getSubject();
+            } catch (JwtException e) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         String redisToken = (String)redisTemplate.opsForValue()
                 .get(RedisConstant.USER_PREFIX + account);
         boolean isAdmin = redisToken.startsWith(SecurityConstant.ADMIN_LABEL);

@@ -1,7 +1,7 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.ShowplaceConstant;
-import com.smartscenicspot.domain.Showplace;
+import com.smartscenicspot.pojo.Showplace;
 import com.smartscenicspot.dto.ShowplaceDto;
 import com.smartscenicspot.mapper.ShowplaceMapper;
 import com.smartscenicspot.repository.ShowplaceRepository;

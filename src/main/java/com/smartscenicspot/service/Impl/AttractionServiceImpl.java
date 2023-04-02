@@ -1,9 +1,8 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.domain.Attraction;
-import com.smartscenicspot.dto.AttractionDto;
 import com.smartscenicspot.dto.AttractionUpdateDto;
 import com.smartscenicspot.mapper.AttractionMapper;
+import com.smartscenicspot.pojo.Attraction;
 import com.smartscenicspot.repository.AttractionRepository;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.vo.AttractionVo;
@@ -28,12 +27,12 @@ public class AttractionServiceImpl implements AttractionService {
 
 
     @Override
-    public AttractionDto getDtoById(Long id) {
+    public AttractionVo getVoById(Long id) {
         Attraction attraction = attractionRepository.findById(id).orElse(null);
         if(attraction == null) {
             return null;
         }
-        return AttractionMapper.INSTANCE.toDto(attraction);
+        return AttractionMapper.INSTANCE.toVo(attraction);
     }
 
     @Override
@@ -44,11 +43,11 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public PageVo<?> getAllDtos(int page, int size) {
+    public PageVo<?> getAllVos(int page, int size) {
         Page<Attraction> attractions = attractionRepository.findAll(PageRequest.of(page, size));
         return PageVo.builder()
                 .data(Collections.singletonList(AttractionMapper.INSTANCE
-                        .toDtoList(attractions.getContent())))
+                        .toVoList(attractions.getContent())))
                 .totalElements(attractions.getTotalElements())
                 .totalPages(attractions.getTotalPages())
                 .build();
@@ -63,6 +62,18 @@ public class AttractionServiceImpl implements AttractionService {
         Attraction updated = AttractionMapper.INSTANCE.partialUpdate(updateDto, attraction);
         attractionRepository.save(updated);
         return true;
+    }
+
+    @Override
+    public PageVo<?> searchDtosByName(String name, int page, int size) {
+        Page<Attraction> attractions = attractionRepository
+                .findByNameContaining(name, PageRequest.of(page, size));
+        return PageVo.builder()
+                .data(Collections.singletonList(AttractionMapper.INSTANCE
+                        .toVoList(attractions.getContent())))
+                .totalElements(attractions.getTotalElements())
+                .totalPages(attractions.getTotalPages())
+                .build();
     }
 
 }

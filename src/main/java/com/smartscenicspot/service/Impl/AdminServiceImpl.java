@@ -2,7 +2,7 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
-import com.smartscenicspot.domain.Admin;
+import com.smartscenicspot.pojo.Admin;
 import com.smartscenicspot.dto.AdminDto;
 import com.smartscenicspot.mapper.AdminMapper;
 import com.smartscenicspot.repository.AdminRepository;

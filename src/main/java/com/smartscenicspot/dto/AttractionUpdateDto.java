@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Attraction} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Attraction} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

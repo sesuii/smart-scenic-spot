@@ -1,13 +1,15 @@
 package com.smartscenicspot.controller;
 
-import com.smartscenicspot.repository.UserRepository;
+import com.smartscenicspot.constant.ResultEnum;
+import com.smartscenicspot.dto.InterestTagDto;
+import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.vo.Result;
+import com.smartscenicspot.vo.UserVo;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 用户信息管理控制类
@@ -21,14 +23,28 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    private UserRepository userRepository;
+    UserService userService;
 
     @GetMapping("/userinfo")
     public Result<?> getUserInfo() {
         String openid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.printf(openid);
+        UserVo userVo = userService.getUserVo(openid);
+        if(userVo == null) {
+            return Result.success(ResultEnum.NOT_FOUND);
+        }
+        return Result.success(userVo);
+    }
 
-        return Result.success();
+    @PutMapping("/update")
+    public Result<?> userInfoUpdate(@RequestBody UserVo userVo) {
+        UserVo updated = userService.updateUserInfo(userVo);
+        return Result.success(updated);
+    }
+
+    @GetMapping("/allTag")
+    public Result<?> getAllTags() {
+        List<InterestTagDto> tagList = userService.getAllTags();
+        return Result.success(tagList);
     }
 
 }

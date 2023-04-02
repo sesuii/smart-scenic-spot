@@ -1,4 +1,4 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

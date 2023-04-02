@@ -1,6 +1,6 @@
 package com.smartscenicspot.repository;
 
-import com.smartscenicspot.domain.Admin;
+import com.smartscenicspot.pojo.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

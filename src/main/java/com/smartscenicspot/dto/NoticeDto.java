@@ -10,17 +10,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Notice} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Notice} entity
+ * @author jiahui
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class NoticeDto implements Serializable {
+    private long id;
     private Date publishTime;
     @NotBlank
     private String subject;
     @NotBlank
     private String content;
     private String type;
+    private String publishWay;
+    private Byte scope = 0;
 }

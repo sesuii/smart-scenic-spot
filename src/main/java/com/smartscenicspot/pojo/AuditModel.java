@@ -1,6 +1,9 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,6 +23,9 @@ import java.util.Date;
         value = {"gmtCreate", "gmtModified"},
         allowGetters = true
 )
+@Getter
+@Setter
+@ToString
 public abstract class AuditModel implements Serializable {
 
     private static final long serialVersionUID = 1L;

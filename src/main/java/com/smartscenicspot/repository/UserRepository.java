@@ -1,6 +1,6 @@
 package com.smartscenicspot.repository;
 
-import com.smartscenicspot.domain.User;
+import com.smartscenicspot.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -11,7 +11,7 @@ import java.util.Optional;
  **/
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findUserByOpenid(String openid);
+    Optional<User> findByOpenid(String openid);
 
     boolean existsUserByOpenid(String openid);
 }

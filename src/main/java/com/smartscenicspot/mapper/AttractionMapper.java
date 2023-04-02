@@ -1,8 +1,7 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.domain.Attraction;
-import com.smartscenicspot.dto.AttractionDto;
 import com.smartscenicspot.dto.AttractionUpdateDto;
+import com.smartscenicspot.pojo.Attraction;
 import com.smartscenicspot.vo.AttractionVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -20,13 +19,15 @@ public interface AttractionMapper {
 
     AttractionMapper INSTANCE = Mappers.getMapper(AttractionMapper.class);
 
-    AttractionDto toDto(Attraction attraction);
-
-    List<AttractionDto> toDtoList(List<Attraction> attractions);
-
     AttractionVo toVo(Attraction attraction);
+
+    List<AttractionVo> toVoList(List<Attraction> attractions);
+
     Attraction voToEntity(AttractionVo attractionVo);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Attraction partialUpdate(AttractionUpdateDto attractionUpdateDto, @MappingTarget Attraction attraction);
+    public abstract Attraction partialUpdate(AttractionUpdateDto attractionUpdateDto, @MappingTarget Attraction attraction);
+
+    // FIXME @AfterMapping 不起作用，根据文档换成抽象类后无法映射
+
 }

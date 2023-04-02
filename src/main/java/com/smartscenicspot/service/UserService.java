@@ -1,7 +1,11 @@
 package com.smartscenicspot.service;
 
+import com.smartscenicspot.dto.InterestTagDto;
+import com.smartscenicspot.pojo.User;
+import com.smartscenicspot.vo.UserVo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,4 +23,11 @@ public interface UserService {
      */
     Map<String, String> toWeChatLogin(String code);
 
+    UserVo getUserVo(String openid);
+
+    UserVo updateUserInfo(UserVo userVo);
+
+    List<InterestTagDto> getAllTags();
+
+    User getUserByOpenid(String openid);
 }

@@ -1,4 +1,4 @@
-package com.smartscenicspot.domain.neo4j;
+package com.smartscenicspot.neo4j.entity;
 
 import lombok.Data;
 import org.neo4j.driver.types.Point;

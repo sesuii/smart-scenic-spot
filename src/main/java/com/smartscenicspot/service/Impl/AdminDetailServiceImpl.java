@@ -1,6 +1,6 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.domain.Admin;
+import com.smartscenicspot.pojo.Admin;
 import com.smartscenicspot.repository.AdminRepository;
 import com.smartscenicspot.vo.AdminVo;
 import org.springframework.security.core.userdetails.UserDetails;

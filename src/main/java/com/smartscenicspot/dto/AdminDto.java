@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the {@link com.smartscenicspot.domain.Admin} entity
+ * A DTO for the {@link com.smartscenicspot.pojo.Admin} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

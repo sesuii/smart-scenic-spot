@@ -1,10 +1,7 @@
 package com.smartscenicspot.utils;
 
 import com.smartscenicspot.constant.SecurityConstant;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -48,7 +45,7 @@ public class JwtUtil {
      * @return
      *
      */
-    public static Claims parseJWT(String token) {
+    public static Claims parseJWT(String token) throws JwtException {
         return Jwts.parser()
                 .setSigningKey(SecurityConstant.JWT_SECRET_KEY)
                 .parseClaimsJws(token).getBody();

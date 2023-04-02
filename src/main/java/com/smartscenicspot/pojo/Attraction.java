@@ -1,9 +1,8 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 景点信息类

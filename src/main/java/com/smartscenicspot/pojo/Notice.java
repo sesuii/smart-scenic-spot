@@ -1,4 +1,8 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +13,9 @@ import java.util.Date;
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/19 18:32
  **/
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_notice")
 public class Notice extends AuditModel{
@@ -36,6 +42,9 @@ public class Notice extends AuditModel{
      */
     @Column(nullable = false, columnDefinition = "smallint default 0")
     private Byte scope;
+
+    @Column(name = "publish_way", columnDefinition = "varchar(50)")
+    private String publishWay;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showplace_id")

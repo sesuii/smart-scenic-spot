@@ -1,10 +1,11 @@
-package com.smartscenicspot.domain;
+package com.smartscenicspot.pojo;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 用户类
@@ -62,7 +63,7 @@ public class User extends AuditModel {
     @ToString.Exclude
     private TourGroup tourGroup;
 
-    @ManyToMany
-    @ToString.Exclude
-    private List<Attraction> attractionList;
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
+    private Set<InterestTag> interestTags = new HashSet<>();
+
 }
