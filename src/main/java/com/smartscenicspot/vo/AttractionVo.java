@@ -1,6 +1,7 @@
 package com.smartscenicspot.vo;
 
 import com.smartscenicspot.constant.ShowplaceConstant;
+import com.smartscenicspot.db.pgql.pojo.Attraction;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.Attraction} entity
+ * A DTO for the {@link Attraction} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

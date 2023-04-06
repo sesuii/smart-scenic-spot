@@ -1,12 +1,13 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.db.pgql.pojo.Admin;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.Admin} entity
+ * A DTO for the {@link Admin} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

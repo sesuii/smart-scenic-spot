@@ -1,5 +1,6 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.db.pgql.pojo.Showplace;
 import com.smartscenicspot.vo.AttractionVo;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.Showplace} entity
+ * A DTO for the {@link Showplace} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

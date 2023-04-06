@@ -1,7 +1,7 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.neo4j.entity.AttractionNode;
-import com.smartscenicspot.neo4j.repo.Neo4jAttractionRepository;
+import com.smartscenicspot.db.neo4j.entity.AttractionNode;
+import com.smartscenicspot.db.neo4j.repository.Neo4jAttractionRepository;
 import com.smartscenicspot.service.Neo4jService;
 import org.springframework.stereotype.Service;
 

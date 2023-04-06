@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/4/3 19:10
  **/
-@Service
 public class WebSocketServiceImpl implements WebSocketService {
 
     /**

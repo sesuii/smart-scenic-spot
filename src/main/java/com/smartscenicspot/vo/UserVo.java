@@ -1,6 +1,7 @@
 package com.smartscenicspot.vo;
 
 import com.smartscenicspot.dto.InterestTagDto;
+import com.smartscenicspot.db.pgql.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.User} entity
+ * A DTO for the {@link User} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +26,8 @@ public class UserVo implements Serializable {
     private Date birthday;
     private String gender;
     private String address;
+    private Double longitude;
+    private Double latitude;
     private Set<InterestTagDto> interestTags = new HashSet<>();
+
 }

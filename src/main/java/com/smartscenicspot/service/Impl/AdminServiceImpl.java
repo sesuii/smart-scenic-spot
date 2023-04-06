@@ -2,10 +2,10 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
-import com.smartscenicspot.pojo.Admin;
+import com.smartscenicspot.db.pgql.pojo.Admin;
 import com.smartscenicspot.dto.AdminDto;
 import com.smartscenicspot.mapper.AdminMapper;
-import com.smartscenicspot.repository.AdminRepository;
+import com.smartscenicspot.db.pgql.repository.AdminRepository;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.vo.AdminVo;

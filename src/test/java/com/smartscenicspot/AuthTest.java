@@ -27,21 +27,31 @@ public class AuthTest {
         // admin 注册
         AdminDto adminDto = AdminDto.builder()
                 .avatar("https://img.zcool.cn/community/01dc8f5c105392a80121ab5d3634a9.jpg@2o.jpg" )
-                .username("1235678")
-                .name("song")
-                .roles(List.of("admin"))
+                .username("song")
+                .name("sungjah")
                 .introduction("庐山景区管理员")
+                .roles(List.of("ADMIN"))
                 .password("123456")
-                .ip("192.168.43.3")
+                .ip("100.66.108.73")
                 .build();
         boolean saved = adminService.createAccount(adminDto);
-        assert saved;
+        AdminDto adminDto1 = AdminDto.builder()
+                .avatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" )
+                .username("admin")
+                .name("admin")
+                .roles(List.of("ADMIN"))
+                .introduction("庐山景区管理员")
+                .password("infinite")
+                .ip("10.21.19.1")
+                .build();
+        boolean saved1 = adminService.createAccount(adminDto1);
+        assert saved1;
     }
 
     @Test
     void loginTest() {
         AdminVo adminVo = AdminVo.builder()
-                .username("1235678")
+                .username("song")
                 .password("123456")
                 .build();
         Map<String, String> token = adminService.toAdminLogin(adminVo);

@@ -1,8 +1,8 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.mapper.ArticleMapper;
-import com.smartscenicspot.pojo.Article;
-import com.smartscenicspot.repository.ArticleRepository;
+import com.smartscenicspot.db.pgql.pojo.Article;
+import com.smartscenicspot.db.pgql.repository.ArticleRepository;
 import com.smartscenicspot.service.ArticleService;
 import com.smartscenicspot.vo.ArticleVo;
 import com.smartscenicspot.vo.PageVo;

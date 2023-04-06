@@ -11,7 +11,7 @@ import com.smartscenicspot.vo.TourGroupVo;
 public interface TourGroupService {
     boolean joinGroup(String inviteCode);
 
-    TourGroupVo getVoById(Long id);
+    TourGroupVo getVo();
 
     PageVo<?> getAllDtos(int page, int size);
 

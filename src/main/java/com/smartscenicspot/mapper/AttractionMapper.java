@@ -1,7 +1,8 @@
 package com.smartscenicspot.mapper;
 
+import com.smartscenicspot.dto.AttractionQueryDto;
 import com.smartscenicspot.dto.AttractionUpdateDto;
-import com.smartscenicspot.pojo.Attraction;
+import com.smartscenicspot.db.pgql.pojo.Attraction;
 import com.smartscenicspot.vo.AttractionVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -27,6 +28,8 @@ public interface AttractionMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     public abstract Attraction partialUpdate(AttractionUpdateDto attractionUpdateDto, @MappingTarget Attraction attraction);
+
+    Attraction QueryDtoToEntity(AttractionQueryDto attractionQueryDto);
 
     // FIXME @AfterMapping 不起作用，根据文档换成抽象类后无法映射
 

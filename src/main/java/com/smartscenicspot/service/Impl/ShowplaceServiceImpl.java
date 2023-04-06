@@ -1,10 +1,10 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.ShowplaceConstant;
-import com.smartscenicspot.pojo.Showplace;
+import com.smartscenicspot.db.pgql.pojo.Showplace;
 import com.smartscenicspot.dto.ShowplaceDto;
 import com.smartscenicspot.mapper.ShowplaceMapper;
-import com.smartscenicspot.repository.ShowplaceRepository;
+import com.smartscenicspot.db.pgql.repository.ShowplaceRepository;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.service.ShowplaceService;
 import com.smartscenicspot.vo.ShowplaceVo;

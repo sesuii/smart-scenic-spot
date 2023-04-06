@@ -2,9 +2,9 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.dto.TourGroupDto;
 import com.smartscenicspot.mapper.TourGroupMapper;
-import com.smartscenicspot.pojo.TourGroup;
-import com.smartscenicspot.pojo.User;
-import com.smartscenicspot.repository.TourGroupRepository;
+import com.smartscenicspot.db.pgql.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.db.pgql.repository.TourGroupRepository;
 import com.smartscenicspot.service.TourGroupService;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.utils.UniqueInvCodeUtil;
@@ -45,9 +45,13 @@ public class TourGroupServiceImpl implements TourGroupService {
     }
 
     @Override
-    public TourGroupVo getVoById(Long id) {
-        TourGroup tourGroup = tourGroupRepository.findById(id).orElse(null);
-        return TourGroupMapper.INSTANCE.toVo(tourGroup);
+    public TourGroupVo getVo() {
+        String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getUserByOpenid(account);
+        if(user == null || user.getTourGroup() == null) {
+            return null;
+        }
+        return TourGroupMapper.INSTANCE.toVo(user.getTourGroup());
     }
 
     @Override

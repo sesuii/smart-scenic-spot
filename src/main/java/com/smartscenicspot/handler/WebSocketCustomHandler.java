@@ -1,11 +1,10 @@
 package com.smartscenicspot.handler;
 
 import com.smartscenicspot.service.WebSocketService;
-import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import javax.annotation.Resource;
 
@@ -13,8 +12,7 @@ import javax.annotation.Resource;
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/4/2 20:05
  **/
-@Component
-public class WebSocketCustomHandler extends AbstractWebSocketHandler {
+public class WebSocketCustomHandler implements WebSocketHandler {
 
     @Resource
     WebSocketService webSocketService;
@@ -41,6 +39,11 @@ public class WebSocketCustomHandler extends AbstractWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // TODO 根据触发关闭的 status，处理连接
         webSocketService.handleClose(session);
+    }
+
+    @Override
+    public boolean supportsPartialMessages() {
+        return false;
     }
 
 }

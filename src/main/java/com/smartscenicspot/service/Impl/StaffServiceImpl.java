@@ -1,8 +1,8 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.pojo.Staff;
+import com.smartscenicspot.db.pgql.pojo.Staff;
 import com.smartscenicspot.mapper.StaffMapper;
-import com.smartscenicspot.repository.StaffRepository;
+import com.smartscenicspot.db.pgql.repository.StaffRepository;
 import com.smartscenicspot.service.StaffService;
 import com.smartscenicspot.vo.PageVo;
 import org.springframework.data.domain.Page;

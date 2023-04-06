@@ -1,5 +1,6 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.db.pgql.pojo.TourGroup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.TourGroup} entity
+ * A DTO for the {@link TourGroup} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

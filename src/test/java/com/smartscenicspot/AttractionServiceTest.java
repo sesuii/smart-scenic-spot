@@ -1,7 +1,9 @@
 package com.smartscenicspot;
 
+import com.smartscenicspot.dto.AttractionQueryDto;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.vo.AttractionVo;
+import com.smartscenicspot.vo.PageVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
@@ -27,6 +29,18 @@ public class AttractionServiceTest {
 
     @Test
     void getAllTest() {
+    }
+
+
+    @Test
+    void attractionQuery() {
+        AttractionQueryDto attractionQueryDto = AttractionQueryDto.builder()
+                .currentPage(0)
+                .pageSize(10)
+                .id(null)
+                .status((byte) 1)
+                .name("英")
+                .build();
     }
 
     @Test

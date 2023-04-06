@@ -1,11 +1,12 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.db.pgql.pojo.InterestTag;
 import lombok.*;
 
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.InterestTag} entity
+ * A DTO for the {@link InterestTag} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

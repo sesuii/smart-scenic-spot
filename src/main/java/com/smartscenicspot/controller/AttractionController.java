@@ -1,6 +1,8 @@
 package com.smartscenicspot.controller;
 
 import com.smartscenicspot.constant.ResultEnum;
+import com.smartscenicspot.dto.AttractionQueryDto;
+import com.smartscenicspot.dto.StaffDto;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.vo.AttractionVo;
 import com.smartscenicspot.vo.PageVo;
@@ -8,6 +10,7 @@ import com.smartscenicspot.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 景点信息管理
@@ -32,19 +35,15 @@ public class AttractionController {
         return Result.success(attractionVo);
     }
 
-    @GetMapping("/all")
-    public Result<?> getAttractions(@RequestParam Integer pageSize,
-                                    @RequestParam Integer currentPage) {
-        PageVo<?> pageVo = attractionService
-                .getAllVos(currentPage - 1, pageSize);
+    @PostMapping("/all")
+    public Result<?> getAttractions(@RequestBody AttractionQueryDto attractionQueryDto){
+        PageVo<?> pageVo = attractionService.getAllVos(attractionQueryDto);
         return Result.success(pageVo);
     }
 
-    @GetMapping("/search")
-    public Result<?> searchByName(@RequestParam String name, @RequestParam Integer pageSize,
-                                  @RequestParam Integer currentPage) {
-        PageVo<?> pageVo = attractionService.searchDtosByName(name, currentPage - 1, pageSize);
-        return Result.success(pageVo);
+    @GetMapping("/{id}/staffs")
+    public Result<?> getStaffsByAttractionId(@PathVariable("id") Long attractionId) {
+        List<StaffDto> staffDtos = attractionService.getStaffs(attractionId);
+        return Result.success(staffDtos);
     }
-
 }

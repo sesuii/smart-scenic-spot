@@ -1,12 +1,13 @@
 package com.smartscenicspot.vo;
 
+import com.smartscenicspot.db.pgql.pojo.Article;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.Article} entity
+ * A DTO for the {@link Article} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,5 +20,5 @@ public class ArticleVo implements Serializable {
     private Date publishTime;
     private String coverImg;
     private String author;
-    private String text;
+    private String content;
 }

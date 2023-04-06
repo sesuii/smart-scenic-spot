@@ -1,7 +1,7 @@
 package com.smartscenicspot.service;
 
 import com.smartscenicspot.dto.InterestTagDto;
-import com.smartscenicspot.pojo.User;
+import com.smartscenicspot.db.pgql.pojo.User;
 import com.smartscenicspot.vo.UserVo;
 import org.springframework.stereotype.Service;
 

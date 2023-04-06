@@ -1,10 +1,8 @@
 package com.smartscenicspot;
 
-import com.smartscenicspot.repository.ArticleRepository;
 import com.smartscenicspot.service.ArticleService;
 import com.smartscenicspot.vo.ArticleVo;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
@@ -23,8 +21,7 @@ public class ArticleServiceTest {
 
     @Resource
     ArticleService articleService;
-    @Autowired
-    private ArticleRepository articleRepository;
+
 
     @Test
     @Transactional
@@ -46,11 +43,12 @@ public class ArticleServiceTest {
         info.add("雾境里的浮生三日<br><br>恍若一觉谪仙好梦<br><br>[DAY1]如琴湖->花径-->天桥--> 锦绣谷-仙人洞->悬索桥>龙首崖->大天池<br><br>[DAY2]植物园->五老峰->三叠泉->牯岭镇<br><br>[DAY3]周恩来纪念馆>美庐->黄龙寺->三宝树->黄龙潭->乌龙潭->含鄱口");
         info.add("庐山有哪些必须打卡的著名景点?<br><br>1.五老峰<br><br>五老峰立于绝顶，五峰并列，仰望俨若席地而坐的五位老翁，故而得名。五峰中，二峰最奇、三峰最险、四峰最美.五峰开阔。这里不仅可见奇石妙峰，还能近观云海崩腾，飘渺壮阔如临仙境。<br><br>2.三叠泉<br><br>三叠泉每叠各具特色，-叠直垂，水流飞溅:二叠弯曲，直入潭中，站在第三叠抬头仰望，三叠泉抛珠溅玉，上下争飞，如果是春春初夏多雨季节，飞瀑如玉龙冲破青天,凌空飞下，雷声轰鸣，叹为观止。故有“不到三叠泉，不算庐山客”之说。<br><br>3.锦绣谷<br><br>庐山很多壮丽的景象是由于第四世纪冰川作用形成，锦绣谷便是其中之一。绝谷之内多峭壁峥壑，层层刻剥，蔚为壮观。锦绣谷中繁花如锦，沿途可见许多野生小猴子在山谷间游荡戏要，谷中的天桥有天无桥，也堪称庐山一奇。<br><br>4.花径<br><br>白居易的那句“人间四月芳菲尽，山寺桃花始盛开。”便是出自此处，花径里有个湖叫做花径湖，人们也叫它如琴湖,因湖面如一把提琴而得名。曲桥通往湖心岛，园中繁花似锦，曲径通幽，湖光山色，风景如画。<br><br>5.含鄱口<br><br>庐山是神州九大观日处之一，庐山观日，位于含鄱口上的含鄱亭为最佳地点。清晨，在此可远看鄱阳湖上层光嘉微，天水-色，一轮红日跃然而出，金光万丈瞬时染尽湖天赤色，半壁山河都被描绘成绚烂跌丽的画卷。<br><br>6.美庐别墅<br><br>“美庐”曾作为蒋介石的夏都官邸，是当年“第一夫人”生活的地方，它演化出的历史轨迹与世纪风云紧密相联，令人神往，又令人困惑。这里是中国唯一栋国共两党最高领袖都住过的别墅，如今，这里收藏的物品、照片极具历史意义。");
         for(int i = 0; i < 5; i++) {
+            System.out.println(urls.get(i).length());
             ArticleVo articleVo = ArticleVo.builder()
                     .title(titles.get(i))
                     .coverImg(urls.get(i))
                     .author(author)
-                    .text(info.get(i))
+                    .content(info.get(i))
                     .build();
             ArticleVo newArticle = articleService.createNewArticle(articleVo);
             assert newArticle != null;

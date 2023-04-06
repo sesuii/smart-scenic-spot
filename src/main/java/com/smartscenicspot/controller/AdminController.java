@@ -45,8 +45,8 @@ public class AdminController {
 
     @PostMapping("/publish")
     public Result<?> publishNotice(@RequestBody NoticeDto noticeDto) {
-        boolean sent = noticeService.broadCast(noticeDto);
-        return Result.success(sent);
+        noticeService.broadCast(noticeDto);
+        return Result.success();
     }
 
 }

@@ -5,10 +5,10 @@ import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.dto.InterestTagDto;
 import com.smartscenicspot.mapper.InterestTagMapper;
 import com.smartscenicspot.mapper.UserMapper;
-import com.smartscenicspot.pojo.InterestTag;
-import com.smartscenicspot.pojo.User;
-import com.smartscenicspot.repository.InterestTagRepository;
-import com.smartscenicspot.repository.UserRepository;
+import com.smartscenicspot.db.pgql.pojo.InterestTag;
+import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.db.pgql.repository.InterestTagRepository;
+import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.utils.WeChatUtil;
@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         if(openid == null) {
             return null;
         }
+        // 微信用户如果不存在默认创建
         User user = userRepository.findByOpenid(openid).orElse(null);
         if(user == null) {
             return null;
@@ -73,8 +74,11 @@ public class UserServiceImpl implements UserService {
     public UserVo updateUserInfo(UserVo userVo) {
         String openid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByOpenid(openid).orElse(null);
+        if(user == null) {
+            return null;
+        }
         User updated = UserMapper.INSTANCE.partialUpdate(userVo, user);
-        return UserMapper.INSTANCE.toVo(updated);
+        return UserMapper.INSTANCE.toVo(userRepository.save(updated));
     }
 
     @Override

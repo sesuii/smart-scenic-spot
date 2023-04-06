@@ -1,18 +1,25 @@
 package com.smartscenicspot.service.Impl;
 
+import com.smartscenicspot.dto.AttractionQueryDto;
 import com.smartscenicspot.dto.AttractionUpdateDto;
+import com.smartscenicspot.dto.StaffDto;
 import com.smartscenicspot.mapper.AttractionMapper;
-import com.smartscenicspot.pojo.Attraction;
-import com.smartscenicspot.repository.AttractionRepository;
+import com.smartscenicspot.mapper.StaffMapper;
+import com.smartscenicspot.db.pgql.pojo.Attraction;
+import com.smartscenicspot.db.pgql.repository.AttractionRepository;
+import com.smartscenicspot.db.pgql.repository.StaffRepository;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.vo.AttractionVo;
 import com.smartscenicspot.vo.PageVo;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
@@ -25,6 +32,8 @@ public class AttractionServiceImpl implements AttractionService {
     @Resource
     AttractionRepository attractionRepository;
 
+    @Resource
+    StaffRepository staffRepository;
 
     @Override
     public AttractionVo getVoById(Long id) {
@@ -42,16 +51,6 @@ public class AttractionServiceImpl implements AttractionService {
         return true;
     }
 
-    @Override
-    public PageVo<?> getAllVos(int page, int size) {
-        Page<Attraction> attractions = attractionRepository.findAll(PageRequest.of(page, size));
-        return PageVo.builder()
-                .data(Collections.singletonList(AttractionMapper.INSTANCE
-                        .toVoList(attractions.getContent())))
-                .totalElements(attractions.getTotalElements())
-                .totalPages(attractions.getTotalPages())
-                .build();
-    }
 
     @Override
     public boolean updateInfo(Long id, AttractionUpdateDto updateDto) {
@@ -65,15 +64,24 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public PageVo<?> searchDtosByName(String name, int page, int size) {
-        Page<Attraction> attractions = attractionRepository
-                .findByNameContaining(name, PageRequest.of(page, size));
+    public PageVo<?> getAllVos(AttractionQueryDto attractionQueryDto) {
+        Attraction attraction = AttractionMapper.INSTANCE.QueryDtoToEntity(attractionQueryDto);
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
+        Page<Attraction> attractions = attractionRepository.findAll(Example.of(attraction, exampleMatcher),
+                PageRequest.of(attractionQueryDto.getCurrentPage() - 1
+                        , attractionQueryDto.getPageSize()));
         return PageVo.builder()
                 .data(Collections.singletonList(AttractionMapper.INSTANCE
                         .toVoList(attractions.getContent())))
                 .totalElements(attractions.getTotalElements())
                 .totalPages(attractions.getTotalPages())
                 .build();
+    }
+
+    @Override
+    public List<StaffDto> getStaffs(Long id) {
+        return StaffMapper.INSTANCE.toDtoList(staffRepository.findAllByAttractionId(id));
     }
 
 }

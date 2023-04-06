@@ -1,6 +1,6 @@
 package com.smartscenicspot.service;
 
-import com.smartscenicspot.neo4j.entity.AttractionNode;
+import com.smartscenicspot.db.neo4j.entity.AttractionNode;
 
 /**
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>

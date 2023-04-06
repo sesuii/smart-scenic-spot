@@ -1,6 +1,6 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.pojo.User;
+import com.smartscenicspot.db.pgql.pojo.User;
 import com.smartscenicspot.vo.UserVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

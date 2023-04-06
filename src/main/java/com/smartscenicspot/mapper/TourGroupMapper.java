@@ -1,7 +1,7 @@
 package com.smartscenicspot.mapper;
 
 import com.smartscenicspot.dto.TourGroupDto;
-import com.smartscenicspot.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.pojo.TourGroup;
 import com.smartscenicspot.vo.TourGroupVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

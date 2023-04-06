@@ -1,5 +1,6 @@
 package com.smartscenicspot.dto;
 
+import com.smartscenicspot.db.pgql.pojo.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.Notice} entity
+ * A DTO for the {@link Notice} entity
  * @author jiahui
  */
 @AllArgsConstructor

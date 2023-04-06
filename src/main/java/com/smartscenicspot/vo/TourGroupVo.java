@@ -1,6 +1,7 @@
 package com.smartscenicspot.vo;
 
 import com.smartscenicspot.dto.NoticeDto;
+import com.smartscenicspot.db.pgql.pojo.TourGroup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A DTO for the {@link com.smartscenicspot.pojo.TourGroup} entity
+ * A DTO for the {@link TourGroup} entity
  */
 @AllArgsConstructor
 @NoArgsConstructor

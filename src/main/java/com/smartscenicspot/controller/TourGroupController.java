@@ -29,9 +29,9 @@ public class TourGroupController {
         return Result.success(join);
     }
 
-    @GetMapping("/{id}")
-    public Result<?> tourGroupInfo(@PathVariable Long id) {
-        TourGroupVo tourGroupVo = tourGroupService.getVoById(id);
+    @GetMapping("/info")
+    public Result<?> tourGroupInfo() {
+        TourGroupVo tourGroupVo = tourGroupService.getVo();
         return Result.success(tourGroupVo);
     }
 

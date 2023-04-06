@@ -1,7 +1,7 @@
 package com.smartscenicspot;
 
 import com.smartscenicspot.dto.ShowplaceDto;
-import com.smartscenicspot.repository.ShowplaceRepository;
+import com.smartscenicspot.db.pgql.repository.ShowplaceRepository;
 import com.smartscenicspot.service.ShowplaceService;
 import com.smartscenicspot.vo.ShowplaceVo;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.pojo.Notice;
+import com.smartscenicspot.db.pgql.pojo.Notice;
 import com.smartscenicspot.dto.NoticeDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

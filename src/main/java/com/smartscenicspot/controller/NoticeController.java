@@ -43,8 +43,13 @@ public class NoticeController {
 
     @PostMapping("/group-publish")
     public Result<?> publishGroupNotice(@RequestBody NoticeDto noticeDto) {
-        boolean sent = noticeService.publishGroupNotice(noticeDto);
-        return Result.success(sent);
+        noticeService.publishGroupNotice(noticeDto);
+        return Result.success();
+    }
+    @DeleteMapping("/{id}")
+    public Result<?> deleteGroupNotice(@PathVariable Long id) {
+        boolean deleted = noticeService.deleteGroupNotice(id);
+        return Result.success(deleted);
     }
 
 }

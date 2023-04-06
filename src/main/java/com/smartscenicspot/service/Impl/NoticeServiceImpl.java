@@ -3,11 +3,11 @@ package com.smartscenicspot.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.smartscenicspot.dto.NoticeDto;
 import com.smartscenicspot.mapper.NoticeMapper;
-import com.smartscenicspot.pojo.Notice;
-import com.smartscenicspot.pojo.TourGroup;
-import com.smartscenicspot.pojo.User;
-import com.smartscenicspot.repository.NoticeRepository;
-import com.smartscenicspot.repository.UserRepository;
+import com.smartscenicspot.db.pgql.pojo.Notice;
+import com.smartscenicspot.db.pgql.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.db.pgql.repository.NoticeRepository;
+import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.service.NoticeService;
 import com.smartscenicspot.service.WebSocketService;
 import com.smartscenicspot.vo.PageVo;
@@ -54,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public PageVo<?> getAllDtos(int page, int size) {
         Page<Notice> notices = noticeRepository.findAllByScope((byte) 0,
-                PageRequest.of(page, size, Sort.by("gmtCreate").descending())).orElse(null);
+                PageRequest.of(page, size, Sort.by("publishTime").descending())).orElse(null);
         if(notices == null) {
             return null;
         }
@@ -74,16 +74,16 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public boolean broadCast(NoticeDto noticeDto) {
+    @Async
+    public void broadCast(NoticeDto noticeDto) {
         Notice notice = NoticeMapper.INSTANCE.toEntity(noticeDto);
-        noticeRepository.save(notice);
-        String message = JSON.toJSONString(noticeDto);
+        Notice saved = noticeRepository.save(notice);
+        String message = JSON.toJSONString(NoticeMapper.INSTANCE.toDto(saved));
         try {
             webSocketService.broadCast(new TextMessage(message));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class NoticeServiceImpl implements NoticeService {
             return null;
         }
         Page<Notice> notices = noticeRepository.findAllByTourGroup(user.getTourGroup(),
-                PageRequest.of(page, size, Sort.by("gmt_create").descending())).orElse(null);
+                PageRequest.of(page, size, Sort.by("publishTime").descending())).orElse(null);
         if(notices == null) {
             return null;
         }
@@ -106,17 +106,16 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    @Async
     @Transactional(rollbackOn = Exception.class)
-    public boolean publishGroupNotice(NoticeDto noticeDto) {
+    public void publishGroupNotice(NoticeDto noticeDto) {
         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByOpenid(account).orElse(null);
         if(user == null || user.getTourGroup() == null) {
-            return false;
+            return;
         }
         TourGroup tourGroup = user.getTourGroup();
         if(tourGroup.getCreator() != user) {
-            return false;
+            return;
         }
         List<String> openids = tourGroup.getMembers().stream().map(User::getOpenid)
                 .collect(Collectors.toList());
@@ -129,6 +128,16 @@ public class NoticeServiceImpl implements NoticeService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean deleteGroupNotice(Long id) {
+        // TODO 1. 鉴权 2. 删除公告
+        Notice notice = noticeRepository.findById(id).orElse(null);
+        if(notice == null) {
+            return true;
+        }
+
         return true;
     }
 }
