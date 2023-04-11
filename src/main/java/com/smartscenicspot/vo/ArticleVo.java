@@ -1,6 +1,6 @@
 package com.smartscenicspot.vo;
 
-import com.smartscenicspot.db.pgql.pojo.Article;
+import com.smartscenicspot.db.pgql.entity.Article;
 import lombok.*;
 
 import java.io.Serializable;

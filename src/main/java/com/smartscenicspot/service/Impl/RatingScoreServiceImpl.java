@@ -2,7 +2,7 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.dto.RatingScoreDto;
 import com.smartscenicspot.mapper.RatingScoreMapper;
-import com.smartscenicspot.db.pgql.pojo.RatingScore;
+import com.smartscenicspot.db.pgql.entity.RatingScore;
 import com.smartscenicspot.db.pgql.repository.RatingScoreRepository;
 import com.smartscenicspot.service.RatingScoreService;
 import com.smartscenicspot.vo.PageVo;

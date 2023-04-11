@@ -1,7 +1,7 @@
 package com.smartscenicspot.vo;
 
 import com.smartscenicspot.dto.NoticeDto;
-import com.smartscenicspot.db.pgql.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.entity.TourGroup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

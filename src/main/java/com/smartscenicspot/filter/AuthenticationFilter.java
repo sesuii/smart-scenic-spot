@@ -3,6 +3,7 @@ package com.smartscenicspot.filter;
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.utils.JwtUtil;
+import com.smartscenicspot.wrapper.HeaderMapRequestWrapper;
 import io.jsonwebtoken.JwtException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,15 +45,28 @@ public class AuthenticationFilter extends OncePerRequestFilter {
      * @param filterChain 过滤链
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain) throws ServletException, IOException {
         String securityHeader = request.getHeader(SecurityConstant.SECURITY_HEADER);
-        if(securityHeader == null ||
+        String secWebsocketHeader = request.getHeader(SecurityConstant.WEBSOCKET_AUTH);
+        String token;
+        if(secWebsocketHeader != null ||
                 !securityHeader.startsWith(SecurityConstant.SECURITY_HEADER_PREFIX)) {
-            filterChain.doFilter(request, response);
-            return;
+            HeaderMapRequestWrapper requestWrapper = new HeaderMapRequestWrapper(request);
+            requestWrapper.addHeader(SecurityConstant.SECURITY_HEADER, securityHeader);
+            response.addHeader(SecurityConstant.WEBSOCKET_AUTH, "v10.stomp, v11.stomp");
+            request = requestWrapper;
+            token = secWebsocketHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
         }
-        String token = securityHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
+        else {
+            if(securityHeader == null ||
+                    !securityHeader.startsWith(SecurityConstant.SECURITY_HEADER_PREFIX)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            token = securityHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
+        }
+
         String account;
             try {
                 account = JwtUtil.parseJWT(token).getSubject();

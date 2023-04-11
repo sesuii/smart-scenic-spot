@@ -5,7 +5,7 @@ import com.smartscenicspot.dto.AttractionUpdateDto;
 import com.smartscenicspot.dto.StaffDto;
 import com.smartscenicspot.mapper.AttractionMapper;
 import com.smartscenicspot.mapper.StaffMapper;
-import com.smartscenicspot.db.pgql.pojo.Attraction;
+import com.smartscenicspot.db.pgql.entity.Attraction;
 import com.smartscenicspot.db.pgql.repository.AttractionRepository;
 import com.smartscenicspot.db.pgql.repository.StaffRepository;
 import com.smartscenicspot.service.AttractionService;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -64,6 +65,7 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
+    @Transactional(value = "pgqlTransactionManger")
     public PageVo<?> getAllVos(AttractionQueryDto attractionQueryDto) {
         Attraction attraction = AttractionMapper.INSTANCE.QueryDtoToEntity(attractionQueryDto);
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
@@ -82,6 +84,13 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public List<StaffDto> getStaffs(Long id) {
         return StaffMapper.INSTANCE.toDtoList(staffRepository.findAllByAttractionId(id));
+    }
+
+    @Override
+    public boolean closeAttraction(Long attractionId) {
+        // FIXME neo4j 同步状态
+        attractionRepository.updateStatusById((byte) 0, attractionId);
+        return true;
     }
 
 }

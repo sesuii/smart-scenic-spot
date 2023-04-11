@@ -1,5 +1,6 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,21 +8,28 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * 用户推荐表
+ * 景点评价表
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
- * @since 2023/4/8 18:54
+ * @since 2023/4/6 14:57
  **/
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_recommendation")
-public class Recommendation extends AuditModel {
+@EqualsAndHashCode
+@Table(name = "tb_rating_score")
+public class RatingScore extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "decimal(10,1) default 5.0")
+    private Double score;
+
+    @Column(columnDefinition = "varchar(500)")
+    private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -31,12 +39,4 @@ public class Recommendation extends AuditModel {
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;
 
-    @Column(name = "propensity", columnDefinition = "decimal(10, 2)")
-    private Double propensity;
-
-    /**
-     * 0 表示用户未去过，1 表示用户已经去过
-     */
-    @Column(name = "status", columnDefinition = "smallint default 0")
-    private Byte status;
 }

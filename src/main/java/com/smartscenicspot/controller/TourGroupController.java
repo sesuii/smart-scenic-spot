@@ -46,4 +46,16 @@ public class TourGroupController {
         TourGroupDto newGroup = tourGroupService.createNewGroup(tourGroupDto);
         return Result.success(newGroup);
     }
+
+    @DeleteMapping("/{id}")
+    public Result<?> deleteGroup(@PathVariable("id") Long groupId) {
+        boolean deleted = tourGroupService.deleteGroup(groupId);
+        return Result.success(deleted);
+    }
+
+    @GetMapping("/exit")
+    public Result<?> exitGroup() {
+        boolean exit = tourGroupService.exitGroup();
+        return Result.success(exit);
+    }
 }

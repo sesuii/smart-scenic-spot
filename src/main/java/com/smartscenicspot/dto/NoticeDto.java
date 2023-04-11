@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.Notice;
+import com.smartscenicspot.db.pgql.entity.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,6 @@ public class NoticeDto implements Serializable {
     @NotBlank
     private String content;
     private String type;
-    private String publishWay;
+    private String publishWay = "人工推送";
     private Byte scope = 0;
 }

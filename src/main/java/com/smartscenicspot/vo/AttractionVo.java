@@ -1,7 +1,7 @@
 package com.smartscenicspot.vo;
 
 import com.smartscenicspot.constant.ShowplaceConstant;
-import com.smartscenicspot.db.pgql.pojo.Attraction;
+import com.smartscenicspot.db.pgql.entity.Attraction;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

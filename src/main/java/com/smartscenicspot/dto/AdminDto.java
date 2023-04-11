@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.Admin;
+import com.smartscenicspot.db.pgql.entity.Admin;
 import lombok.*;
 
 import java.io.Serializable;

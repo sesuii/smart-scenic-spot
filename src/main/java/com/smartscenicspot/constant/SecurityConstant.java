@@ -9,9 +9,9 @@ package com.smartscenicspot.constant;
 public class SecurityConstant {
 
     /**
-     * Token 存活时间 6h
+     * Token 存活时间 24h
      */
-    public static final int TOKEN_EXPIRE_TIME = 1000 * 3600 * 6;
+    public static final int TOKEN_EXPIRE_TIME = 1000 * 3600 * 24;
 
     /**
      * 加密 Token 固定密钥
@@ -22,6 +22,11 @@ public class SecurityConstant {
      * Token Header
      */
     public static final String SECURITY_HEADER = "authorization";
+
+    /**
+     * Access-Token
+     */
+    public static final String WEBSOCKET_AUTH = "Sec-WebSocket-Protocol";
 
     public static final String ADMIN_LABEL = "ADMIN_";
 

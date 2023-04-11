@@ -1,6 +1,6 @@
 package com.smartscenicspot.db.neo4j.entity;
 
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
@@ -11,7 +11,7 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
  **/
 
 @RelationshipProperties
-@EqualsAndHashCode
+@Data
 public class WalkingRelationship {
 
     @RelationshipId
@@ -19,6 +19,10 @@ public class WalkingRelationship {
 
     @TargetNode
     private AttractionNode attractionNode;
+
+    private Double cost;
+
+    private Double distance;
 
     private Integer capacity;
 

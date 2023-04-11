@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository
 public interface Neo4jAttractionRepository extends Neo4jRepository<AttractionNode, Long> {
+//    @Query("MATCH (n:Attraction) RETURN n ORDER BY n.attractionId ASC return n")
+//    Result findAllWithoutRelationships();
 }

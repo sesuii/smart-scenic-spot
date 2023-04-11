@@ -1,6 +1,6 @@
 package com.smartscenicspot.db.pgql.repository;
 
-import com.smartscenicspot.db.pgql.pojo.Showplace;
+import com.smartscenicspot.db.pgql.entity.Showplace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

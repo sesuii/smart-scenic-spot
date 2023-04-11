@@ -1,6 +1,6 @@
 package com.smartscenicspot.service;
 
-import com.smartscenicspot.db.neo4j.entity.AttractionNode;
+import java.util.List;
 
 /**
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
@@ -8,5 +8,5 @@ import com.smartscenicspot.db.neo4j.entity.AttractionNode;
  **/
 public interface Neo4jService {
 
-    AttractionNode demo();
+    List<?> getDynamicInfo();
 }

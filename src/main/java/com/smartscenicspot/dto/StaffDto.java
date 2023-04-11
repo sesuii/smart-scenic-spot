@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.Staff;
+import com.smartscenicspot.db.pgql.entity.Staff;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

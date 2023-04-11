@@ -1,4 +1,4 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ public class Notice extends AuditModel{
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "publish_time")
     private Date publishTime;
 
     @NotBlank
@@ -43,14 +44,14 @@ public class Notice extends AuditModel{
     @Column(columnDefinition = "smallint default 0")
     private Byte scope;
 
-    @Column(name = "publish_way", columnDefinition = "varchar(50) default '手动推送'")
+    @Column(name = "publish_way", columnDefinition = "varchar(50)")
     private String publishWay;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showplace_id")
     private Showplace showplace;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id")
     private TourGroup tourGroup;
 

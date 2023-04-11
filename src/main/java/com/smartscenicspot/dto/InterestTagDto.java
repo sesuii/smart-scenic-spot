@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.InterestTag;
+import com.smartscenicspot.db.pgql.entity.InterestTag;
 import lombok.*;
 
 import java.io.Serializable;

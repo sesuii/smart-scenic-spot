@@ -2,23 +2,29 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
+import com.smartscenicspot.db.pgql.entity.InterestTag;
+import com.smartscenicspot.db.pgql.entity.User;
+import com.smartscenicspot.db.pgql.repository.AttractionRepository;
+import com.smartscenicspot.db.pgql.repository.InterestTagRepository;
+import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.dto.InterestTagDto;
 import com.smartscenicspot.mapper.InterestTagMapper;
 import com.smartscenicspot.mapper.UserMapper;
-import com.smartscenicspot.db.pgql.pojo.InterestTag;
-import com.smartscenicspot.db.pgql.pojo.User;
-import com.smartscenicspot.db.pgql.repository.InterestTagRepository;
-import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.utils.JwtUtil;
 import com.smartscenicspot.utils.WeChatUtil;
+import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.UserVo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     InterestTagRepository interestTagRepository;
+    private final AttractionRepository attractionRepository;
+
+    public UserServiceImpl(AttractionRepository attractionRepository) {
+        this.attractionRepository = attractionRepository;
+    }
 
     /**
      * 从 Security 中拿出经过 WeChatAuthenticationProvider 验证的 openid
@@ -48,13 +59,13 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> toWeChatLogin(String code) {
         // ==== 测试用户登录为 test 前缀，不获取 openid ======
         String openid = code.startsWith("test_") ? code : WeChatUtil.jscode2session(code);
-        if(openid == null) {
+        if (openid == null) {
             return null;
         }
         // 微信用户如果不存在默认创建
         User user = userRepository.findByOpenid(openid).orElse(null);
-        if(user == null) {
-            return null;
+        if (user == null) {
+            user = userRepository.save(new User(openid, (byte) 1));
         }
         String token = JwtUtil.createJWT(openid);
         redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX + openid,
@@ -64,13 +75,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(value = "pgqlTransactionManger")
     public UserVo getUserVo(String openid) {
         User user = userRepository.findByOpenid(openid).orElse(null);
+        // FIXME
         return UserMapper.INSTANCE.toVo(user);
     }
 
     @Override
+    @Transactional(value = "pgqlTransactionManger")
     public UserVo updateUserInfo(UserVo userVo) {
         String openid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByOpenid(openid).orElse(null);
@@ -84,12 +97,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<InterestTagDto> getAllTags() {
         List<InterestTag> tags = interestTagRepository.findAll();
-        return InterestTagMapper.INSTANCE.toVoList(tags);
+        return InterestTagMapper.INSTANCE.toDtoList(tags);
     }
 
     @Override
     public User getUserByOpenid(String openid) {
         return userRepository.findByOpenid(openid).orElse(null);
+    }
+
+    @Override
+    @Transactional(value = "pgqlTransactionManger")
+    public PageVo<?> analyseUserInfo(int page, int size) {
+        Page<User> users = userRepository.findAll(PageRequest.of(page, size, Sort.by(
+                Sort.Order.desc("gmtModified"))));
+        return PageVo.builder()
+                .data(Collections.singletonList(UserMapper.INSTANCE.toDtoList(users.getContent())))
+                .totalElements(users.getTotalElements())
+                .totalPages(users.getTotalPages())
+                .build();
     }
 
 }

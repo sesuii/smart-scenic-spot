@@ -23,4 +23,6 @@ public interface AttractionService {
     PageVo<?> getAllVos(AttractionQueryDto attractionQueryDto);
 
     List<StaffDto> getStaffs(Long id);
+
+    boolean closeAttraction(Long attractionId);
 }

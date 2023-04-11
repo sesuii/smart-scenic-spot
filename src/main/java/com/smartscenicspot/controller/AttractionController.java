@@ -4,6 +4,7 @@ import com.smartscenicspot.constant.ResultEnum;
 import com.smartscenicspot.dto.AttractionQueryDto;
 import com.smartscenicspot.dto.StaffDto;
 import com.smartscenicspot.service.AttractionService;
+import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.vo.AttractionVo;
 import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.Result;
@@ -26,6 +27,9 @@ public class AttractionController {
     @Resource
     AttractionService attractionService;
 
+    @Resource
+    Neo4jService neo4jService;
+
     @GetMapping("/{id}")
     public Result<?> getAttractionById(@PathVariable(name = "id") Long id) {
         AttractionVo attractionVo = attractionService.getVoById(id);
@@ -45,5 +49,11 @@ public class AttractionController {
     public Result<?> getStaffsByAttractionId(@PathVariable("id") Long attractionId) {
         List<StaffDto> staffDtos = attractionService.getStaffs(attractionId);
         return Result.success(staffDtos);
+    }
+
+    @GetMapping("/dynamic/info")
+    public Result<?> getDynamicAttractionInfo(){
+        List<?> attractionNodes = neo4jService.getDynamicInfo();
+        return Result.success(attractionNodes);
     }
 }

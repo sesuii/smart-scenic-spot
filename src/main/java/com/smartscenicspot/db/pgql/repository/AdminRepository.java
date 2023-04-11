@@ -1,6 +1,6 @@
 package com.smartscenicspot.db.pgql.repository;
 
-import com.smartscenicspot.db.pgql.pojo.Admin;
+import com.smartscenicspot.db.pgql.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

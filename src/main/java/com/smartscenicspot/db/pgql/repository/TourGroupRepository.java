@@ -1,6 +1,6 @@
 package com.smartscenicspot.db.pgql.repository;
 
-import com.smartscenicspot.db.pgql.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.entity.TourGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

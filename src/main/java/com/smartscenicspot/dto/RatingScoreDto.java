@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.RatingScore;
+import com.smartscenicspot.db.pgql.entity.RatingScore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

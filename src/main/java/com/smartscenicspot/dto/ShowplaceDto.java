@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.Showplace;
+import com.smartscenicspot.db.pgql.entity.Showplace;
 import com.smartscenicspot.vo.AttractionVo;
 import lombok.*;
 

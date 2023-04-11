@@ -1,9 +1,10 @@
 package com.smartscenicspot.service.Impl;
 
+import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.dto.TourGroupDto;
 import com.smartscenicspot.mapper.TourGroupMapper;
-import com.smartscenicspot.db.pgql.pojo.TourGroup;
-import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.db.pgql.entity.TourGroup;
+import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.db.pgql.repository.TourGroupRepository;
 import com.smartscenicspot.service.TourGroupService;
 import com.smartscenicspot.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -31,6 +33,12 @@ public class TourGroupServiceImpl implements TourGroupService {
 
     @Resource
     UserService userService;
+    private final UserRepository userRepository;
+
+    public TourGroupServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public boolean joinGroup(String inviteCode) {
         TourGroup tourGroup = tourGroupRepository.findByInviteCode(inviteCode).orElse(null);
@@ -45,6 +53,7 @@ public class TourGroupServiceImpl implements TourGroupService {
     }
 
     @Override
+    @Transactional(value = "pgqlTransactionManger")
     public TourGroupVo getVo() {
         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUserByOpenid(account);
@@ -66,6 +75,7 @@ public class TourGroupServiceImpl implements TourGroupService {
     }
 
     @Override
+    @Transactional(value = "pgqlTransactionManger", rollbackFor = Exception.class)
     public TourGroupDto createNewGroup(TourGroupDto tourGroupDto) {
         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUserByOpenid(account);
@@ -74,6 +84,25 @@ public class TourGroupServiceImpl implements TourGroupService {
         tourGroup.setCreator(user);
         user.setTourGroup(tourGroup);
         tourGroupRepository.save(tourGroup);
+        userRepository.save(user);
         return TourGroupMapper.INSTANCE.toDto(tourGroup);
+    }
+
+    @Override
+    public boolean deleteGroup(Long groupId) {
+        String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TourGroup tourGroup = tourGroupRepository.findById(groupId).orElse(null);
+        if(tourGroup == null || tourGroup.getCreator().getOpenid() != account) {
+            return false;
+        }
+        tourGroupRepository.deleteById(groupId);
+        return true;
+    }
+
+    @Override
+    public boolean exitGroup() {
+        String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userRepository.updateTourGroupByOpenid(null, account);
+        return true;
     }
 }

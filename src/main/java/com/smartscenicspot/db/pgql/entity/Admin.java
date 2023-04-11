@@ -1,4 +1,4 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import com.vladmihalcea.hibernate.type.basic.Inet;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLInetType;

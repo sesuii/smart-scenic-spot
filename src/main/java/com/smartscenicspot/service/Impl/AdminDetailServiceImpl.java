@@ -1,6 +1,6 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.db.pgql.pojo.Admin;
+import com.smartscenicspot.db.pgql.entity.Admin;
 import com.smartscenicspot.db.pgql.repository.AdminRepository;
 import com.smartscenicspot.vo.AdminVo;
 import org.springframework.security.core.userdetails.UserDetails;

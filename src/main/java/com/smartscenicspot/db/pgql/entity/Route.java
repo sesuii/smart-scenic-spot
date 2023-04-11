@@ -1,6 +1,9 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -15,6 +18,9 @@ import java.util.Map;
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/24 22:57
  **/
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_route")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)

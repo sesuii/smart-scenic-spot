@@ -1,13 +1,13 @@
 package com.smartscenicspot.service.Impl;
 
 import com.alibaba.fastjson.JSON;
-import com.smartscenicspot.dto.NoticeDto;
-import com.smartscenicspot.mapper.NoticeMapper;
-import com.smartscenicspot.db.pgql.pojo.Notice;
-import com.smartscenicspot.db.pgql.pojo.TourGroup;
-import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.db.pgql.entity.Notice;
+import com.smartscenicspot.db.pgql.entity.TourGroup;
+import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.db.pgql.repository.NoticeRepository;
 import com.smartscenicspot.db.pgql.repository.UserRepository;
+import com.smartscenicspot.dto.NoticeDto;
+import com.smartscenicspot.mapper.NoticeMapper;
 import com.smartscenicspot.service.NoticeService;
 import com.smartscenicspot.service.WebSocketService;
 import com.smartscenicspot.vo.PageVo;
@@ -17,10 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public PageVo<?> getAllDtos(int page, int size) {
         Page<Notice> notices = noticeRepository.findAllByScope((byte) 0,
-                PageRequest.of(page, size, Sort.by("publishTime").descending())).orElse(null);
+                PageRequest.of(page, size, Sort.by("gmtCreate").descending())).orElse(null);
         if(notices == null) {
             return null;
         }
@@ -106,7 +106,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(value = "pgqlTransactionManger", rollbackFor = Exception.class)
     public void publishGroupNotice(NoticeDto noticeDto) {
         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByOpenid(account).orElse(null);
@@ -121,6 +121,7 @@ public class NoticeServiceImpl implements NoticeService {
                 .collect(Collectors.toList());
         Notice notice = NoticeMapper.INSTANCE.toEntity(noticeDto);
         notice.setScope((byte) 1);
+        notice.setTourGroup(tourGroup);
         noticeRepository.save(notice);
         String message = JSON.toJSONString(noticeDto);
         try {

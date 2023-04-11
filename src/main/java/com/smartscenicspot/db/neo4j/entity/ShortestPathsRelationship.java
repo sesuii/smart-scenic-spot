@@ -1,9 +1,9 @@
 package com.smartscenicspot.db.neo4j.entity;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
-import org.springframework.data.neo4j.core.schema.TargetNode;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ import java.util.List;
  **/
 @RelationshipProperties
 @EqualsAndHashCode
+@Data
 public class ShortestPathsRelationship {
 
     @RelationshipId
     private Long id;
 
-    @TargetNode
-    private AttractionNode attractionNode;
+    private List<String> shortestPaths;
 
-    private List<List<Long>> shortestPaths;
+    private List<Double> costs;
 
 }

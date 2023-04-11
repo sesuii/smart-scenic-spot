@@ -1,10 +1,10 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.ShowplaceConstant;
-import com.smartscenicspot.db.pgql.pojo.Showplace;
+import com.smartscenicspot.db.pgql.entity.Showplace;
+import com.smartscenicspot.db.pgql.repository.ShowplaceRepository;
 import com.smartscenicspot.dto.ShowplaceDto;
 import com.smartscenicspot.mapper.ShowplaceMapper;
-import com.smartscenicspot.db.pgql.repository.ShowplaceRepository;
 import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.service.ShowplaceService;
 import com.smartscenicspot.vo.ShowplaceVo;
@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +52,6 @@ public class ShowplaceServiceImpl implements ShowplaceService {
     }
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public boolean addNewShowplace(ShowplaceVo showplaceVo) {
         Showplace showplace = new Showplace();
         BeanUtils.copyProperties(showplaceVo, showplace);
@@ -63,7 +61,6 @@ public class ShowplaceServiceImpl implements ShowplaceService {
     }
 
     @Override
-    @Transactional
     public ShowplaceDto getDTOById(Long id) {
         Optional<Showplace> optionalShowplace = showplaceRepository.findById(id);
         Showplace showplace = optionalShowplace.orElse(null);

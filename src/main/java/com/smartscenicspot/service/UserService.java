@@ -1,7 +1,8 @@
 package com.smartscenicspot.service;
 
+import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.dto.InterestTagDto;
-import com.smartscenicspot.db.pgql.pojo.User;
+import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.UserVo;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +31,6 @@ public interface UserService {
     List<InterestTagDto> getAllTags();
 
     User getUserByOpenid(String openid);
+
+    PageVo<?> analyseUserInfo(int page, int size);
 }

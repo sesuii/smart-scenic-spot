@@ -1,6 +1,6 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.db.pgql.pojo.Showplace;
+import com.smartscenicspot.db.pgql.entity.Showplace;
 import com.smartscenicspot.dto.ShowplaceDto;
 import com.smartscenicspot.vo.ShowplaceVo;
 import org.mapstruct.Mapper;

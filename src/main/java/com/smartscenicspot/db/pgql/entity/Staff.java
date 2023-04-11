@@ -1,4 +1,4 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,6 +52,7 @@ public class Staff extends AuditModel {
      * 入职时间
      */
     @Temporal(TemporalType.DATE)
+    @Column(name = "entry_time")
     private Date entryTime;
 
     @ManyToOne

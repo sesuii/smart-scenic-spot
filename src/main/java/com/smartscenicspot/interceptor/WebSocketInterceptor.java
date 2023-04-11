@@ -20,7 +20,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
          attributes.put(RedisConstant.USER_OPENID, account);
          return true;
     }

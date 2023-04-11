@@ -1,7 +1,7 @@
 package com.smartscenicspot.db.pgql.repository;
 
-import com.smartscenicspot.db.pgql.pojo.Notice;
-import com.smartscenicspot.db.pgql.pojo.TourGroup;
+import com.smartscenicspot.db.pgql.entity.Notice;
+import com.smartscenicspot.db.pgql.entity.TourGroup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

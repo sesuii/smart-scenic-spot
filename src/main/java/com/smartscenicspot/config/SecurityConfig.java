@@ -1,5 +1,6 @@
 package com.smartscenicspot.config;
 
+import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.filter.AuthenticationFilter;
 import com.smartscenicspot.service.Impl.AdminDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("authorization", "content-type"));
+        config.setAllowedHeaders(List.of("authorization", "content-type", SecurityConstant.WEBSOCKET_AUTH));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();

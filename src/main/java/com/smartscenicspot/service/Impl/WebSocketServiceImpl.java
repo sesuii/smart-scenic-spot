@@ -2,7 +2,6 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.service.WebSocketService;
-import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;

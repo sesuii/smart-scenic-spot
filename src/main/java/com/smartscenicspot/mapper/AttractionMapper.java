@@ -2,7 +2,7 @@ package com.smartscenicspot.mapper;
 
 import com.smartscenicspot.dto.AttractionQueryDto;
 import com.smartscenicspot.dto.AttractionUpdateDto;
-import com.smartscenicspot.db.pgql.pojo.Attraction;
+import com.smartscenicspot.db.pgql.entity.Attraction;
 import com.smartscenicspot.vo.AttractionVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

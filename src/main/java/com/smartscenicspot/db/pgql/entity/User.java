@@ -1,10 +1,10 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,20 +20,23 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@ToString
 public class User extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "openid", nullable = false, unique = true)
     private String openid;
+
+    @Column(name = "name", columnDefinition = "varchar(50)")
+    private String name;
 
     @Column(columnDefinition = "varchar(100)")
     private String avatar;
 
-    @Column(nullable = false, columnDefinition = "varchar(50)")
+    @Column(columnDefinition = "varchar(50)")
     private String phone;
 
     @Temporal(TemporalType.DATE)
@@ -48,6 +51,11 @@ public class User extends AuditModel {
     @Column(columnDefinition = "decimal(10,6)")
     private Double latitude;
 
+    public User(String openid, Byte status) {
+        this.openid = openid;
+        this.status = status;
+    }
+
     @Column(columnDefinition = "varchar(100)")
     private String address;
 
@@ -55,6 +63,7 @@ public class User extends AuditModel {
     private Byte status;
 
     @OneToMany(mappedBy = "user")
+    @ToString.Exclude
     private Set<RatingScore> ratingScores;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -62,7 +71,7 @@ public class User extends AuditModel {
     @ToString.Exclude
     private Showplace showplace;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private TourGroup tourGroup;
@@ -73,6 +82,9 @@ public class User extends AuditModel {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<InterestTag> interestTags = new HashSet<>();
+    private List<InterestTag> interestTags;
 
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    List<Recommendation> recommendationList;
 }

@@ -1,14 +1,11 @@
 package com.smartscenicspot.db.neo4j.entity;
 
 import lombok.Data;
-import org.neo4j.driver.types.Point;
-import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import javax.persistence.GeneratedValue;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,17 +32,18 @@ public class AttractionNode {
 
     private Integer current;
 
-    @ConvertWith(converterRef = "ByteArray with length 1")
-    private Byte status;
+    private Integer status;
 
-    private Point location;
+    private Double latitude;
+
+    private Double longitude;
 
     private Long parentId;
 
     @Relationship(type = "WALKING")
-    private Set<WalkingRelationship> walkingRoutes = new HashSet<>();
+    private Set<WalkingRelationship> walkingRoutes;
 
-    @Relationship(type = "SHORTEST_PATH_TO")
-    private Set<ShortestPathsRelationship> shortestPaths = new HashSet<>();
+//    @Relationship(type = "SHORTEST_PATH_TO")
+//    private Set<ShortestPathsRelationship> shortestPaths;
 
 }

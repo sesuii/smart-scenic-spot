@@ -1,4 +1,4 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

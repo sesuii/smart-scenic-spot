@@ -1,6 +1,6 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.db.pgql.pojo.Staff;
+import com.smartscenicspot.db.pgql.entity.Staff;
 import com.smartscenicspot.dto.StaffDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

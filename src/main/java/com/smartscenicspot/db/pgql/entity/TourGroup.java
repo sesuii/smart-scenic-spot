@@ -1,4 +1,4 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,8 +27,8 @@ public class TourGroup extends AuditModel {
     @Column(name = "group_name", nullable = false, columnDefinition = "varchar(50)")
     private String groupName;
 
-    @Column(name = "group_info", columnDefinition = "text")
-    private String groupInfo;
+    @Column(name = "group_intro", columnDefinition = "text")
+    private String groupIntro;
 
     @Column(columnDefinition = "decimal(10,6)")
     private Double longitude;
@@ -51,10 +51,10 @@ public class TourGroup extends AuditModel {
     @OneToOne
     private User creator;
 
-    @OneToMany(mappedBy = "tourGroup")
+    @OneToMany(mappedBy = "tourGroup", cascade = CascadeType.ALL)
     private List<User> members;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourGroup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourGroup", cascade = CascadeType.ALL)
     private List<Notice> noticeList;
     @ManyToOne
     @JoinColumn(name = "showplace_id")

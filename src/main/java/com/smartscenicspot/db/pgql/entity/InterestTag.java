@@ -1,9 +1,9 @@
-package com.smartscenicspot.db.pgql.pojo;
+package com.smartscenicspot.db.pgql.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 用户兴趣标签表
@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode
+@ToString
 @Table(name = "tb_interest_tag")
 public class InterestTag extends AuditModel{
     @Id
@@ -28,6 +28,6 @@ public class InterestTag extends AuditModel{
 
     @ManyToMany(mappedBy = "interestTags")
     @ToString.Exclude
-    private Set<User> users;
+    private List<User> users;
 
 }

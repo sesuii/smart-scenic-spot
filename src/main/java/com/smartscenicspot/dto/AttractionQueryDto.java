@@ -1,6 +1,6 @@
 package com.smartscenicspot.dto;
 
-import com.smartscenicspot.db.pgql.pojo.Attraction;
+import com.smartscenicspot.db.pgql.entity.Attraction;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
+@ToString
 public class AttractionQueryDto implements Serializable {
     private Long id;
     @NotBlank
@@ -22,5 +23,5 @@ public class AttractionQueryDto implements Serializable {
     private String category;
     private Byte status;
     private int currentPage = 1;
-    private int pageSize = 10;
+    private int pageSize = 5;
 }

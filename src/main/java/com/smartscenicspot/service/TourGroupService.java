@@ -16,4 +16,8 @@ public interface TourGroupService {
     PageVo<?> getAllDtos(int page, int size);
 
     TourGroupDto createNewGroup(TourGroupDto tourGroupDto);
+
+    boolean deleteGroup(Long groupId);
+
+    boolean exitGroup();
 }

@@ -1,6 +1,6 @@
 package com.smartscenicspot.mapper;
 
-import com.smartscenicspot.db.pgql.pojo.Admin;
+import com.smartscenicspot.db.pgql.entity.Admin;
 import com.smartscenicspot.dto.AdminDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -49,4 +49,11 @@ public class AdminController {
         return Result.success();
     }
 
+    @PutMapping("/close-attraction/{id}")
+    public Result<?> closeAttraction(@PathVariable Long attractionId) {
+        boolean closed = attractionService.closeAttraction(attractionId);
+        return Result.success(closed);
+    }
+
+
 }
