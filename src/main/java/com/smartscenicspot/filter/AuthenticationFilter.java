@@ -50,13 +50,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String securityHeader = request.getHeader(SecurityConstant.SECURITY_HEADER);
         String secWebsocketHeader = request.getHeader(SecurityConstant.WEBSOCKET_AUTH);
         String token;
-        if(secWebsocketHeader != null ||
-                !securityHeader.startsWith(SecurityConstant.SECURITY_HEADER_PREFIX)) {
+        if(secWebsocketHeader != null) {
             HeaderMapRequestWrapper requestWrapper = new HeaderMapRequestWrapper(request);
-            requestWrapper.addHeader(SecurityConstant.SECURITY_HEADER, securityHeader);
-            response.addHeader(SecurityConstant.WEBSOCKET_AUTH, "v10.stomp, v11.stomp");
+            requestWrapper.addHeader(SecurityConstant.SECURITY_HEADER, SecurityConstant.SECURITY_HEADER_PREFIX + secWebsocketHeader);
+            response.addHeader(SecurityConstant.WEBSOCKET_AUTH, secWebsocketHeader);
             request = requestWrapper;
-            token = secWebsocketHeader.substring(SecurityConstant.SECURITY_HEADER_PREFIX.length());
+            token = secWebsocketHeader;
         }
         else {
             if(securityHeader == null ||
