@@ -9,4 +9,8 @@ import java.util.List;
 public interface Neo4jService {
 
     List<?> getDynamicInfo();
+
+    List<Long> getSingleSourcePath(Long sourceId, Long targetId);
+
+    boolean changeStatus(Long attractionId);
 }

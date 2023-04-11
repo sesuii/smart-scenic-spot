@@ -9,6 +9,7 @@ import com.smartscenicspot.db.pgql.entity.Attraction;
 import com.smartscenicspot.db.pgql.repository.AttractionRepository;
 import com.smartscenicspot.db.pgql.repository.StaffRepository;
 import com.smartscenicspot.service.AttractionService;
+import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.vo.AttractionVo;
 import com.smartscenicspot.vo.PageVo;
 import org.springframework.data.domain.Example;
@@ -35,6 +36,9 @@ public class AttractionServiceImpl implements AttractionService {
 
     @Resource
     StaffRepository staffRepository;
+
+    @Resource
+    Neo4jService neo4jService;
 
     @Override
     public AttractionVo getVoById(Long id) {
@@ -87,10 +91,18 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public boolean closeAttraction(Long attractionId) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean changeStatus(Long attractionId) {
         // FIXME neo4j 同步状态
-        attractionRepository.updateStatusById((byte) 0, attractionId);
-        return true;
+        Attraction attraction = attractionRepository.findById(attractionId).orElse(null);
+        if(attraction == null) {
+            return false;
+        }
+        boolean changedPG = attractionRepository.updateStatusById(attraction.getStatus() == (byte) 1
+                ? (byte) 0 : (byte) 1, attractionId);
+        boolean changedN4J = neo4jService.changeStatus(attractionId);
+        // FIXME 通知
+        return changedPG && changedN4J;
     }
 
 }

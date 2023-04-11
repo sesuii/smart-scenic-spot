@@ -20,8 +20,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableNeo4jRepositories(
-        basePackages = {"com.smartscenicspot.db.neo4j"},
-        transactionManagerRef = "neo4jTransactionManager"
+        basePackages = "com.smartscenicspot.db.neo4j.repository",
+        transactionManagerRef = "neo4jTransactionManager",
+        considerNestedRepositories = true
 )
 @EnableTransactionManagement
 public class Neo4jConfig extends Neo4jAutoConfiguration {

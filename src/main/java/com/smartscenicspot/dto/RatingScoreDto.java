@@ -19,7 +19,7 @@ import java.util.Date;
 public class RatingScoreDto implements Serializable {
     private Date gmtModified;
     private Long id;
-    private Double score;
+    private Double score = 5.0;
     private String comment;
     private Long userId;
     private Long attractionId;

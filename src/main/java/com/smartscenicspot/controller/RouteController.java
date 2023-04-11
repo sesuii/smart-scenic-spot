@@ -1,13 +1,15 @@
 package com.smartscenicspot.controller;
 
 import com.smartscenicspot.constant.ResultEnum;
-import com.smartscenicspot.service.StaticRouteService;
 import com.smartscenicspot.dto.StaticRouteDto;
+import com.smartscenicspot.service.Neo4jService;
+import com.smartscenicspot.service.StaticRouteService;
 import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 静态路线控制类
@@ -21,6 +23,9 @@ public class RouteController {
 
     @Resource
     StaticRouteService staticRouteService;
+
+    @Resource
+    Neo4jService neo4jService;
 
     @GetMapping("/static/{id}")
     public Result<?> getStaticRouteById(@PathVariable(name = "id") Long id) {
@@ -38,9 +43,9 @@ public class RouteController {
         return Result.success(pageVo);
     }
 
-    @PostMapping("/walking/single-target")
-    public Result<?> pathToSingleTarget() {
-
+    @GetMapping("/walking/single-source")
+    public Result<?> pathToSingleSource(@RequestParam Long sourceId, @RequestParam Long targetId) {
+        List<Long> viaNodes = neo4jService.getSingleSourcePath(sourceId, targetId);
         return null;
     }
 
