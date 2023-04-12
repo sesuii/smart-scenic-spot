@@ -13,5 +13,5 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     @Transactional(rollbackFor = Exception.class)
     @Modifying
     @Query("update Attraction a set a.status = ?1 where a.id = ?2")
-    boolean updateStatusById(Byte status, Long id);
+    void updateStatusById(Byte status, Long id);
 }

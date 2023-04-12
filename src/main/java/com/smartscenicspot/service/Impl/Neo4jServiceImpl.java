@@ -1,17 +1,15 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.db.neo4j.entity.AttractionNode;
 import com.smartscenicspot.db.neo4j.entity.ShortestPathsRelationship;
 import com.smartscenicspot.db.neo4j.repository.Neo4jAttractionRepository;
 import com.smartscenicspot.service.Neo4jService;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import com.smartscenicspot.vo.BestRouteResultVo;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +22,8 @@ public class Neo4jServiceImpl implements Neo4jService {
     @Resource
     Neo4jAttractionRepository neo4jAttractionRepository;
 
-
+    @Resource
+    Neo4jClient neo4jClient;
 
     @Override
     @Transactional(value = "neo4jTransactionManager")
@@ -43,13 +42,63 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public boolean changeStatus(Long attractionId) {
-        AttractionNode attractionNode = new AttractionNode(attractionId);
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
-                        .withMatcher("attractionId", ExampleMatcher.GenericPropertyMatchers.exact());
-        AttractionNode node = neo4jAttractionRepository.findOne(Example.of(attractionNode, exampleMatcher)).orElse(null);
-        node.setStatus(node.getStatus() == 1 ? 0 : 1);
-        neo4jAttractionRepository.save(node);
+    public boolean changeStatus(Long attractionId, Integer status) {
+        neo4jAttractionRepository.updateAttractionStatus(attractionId, status);
         return true;
+    }
+
+    @Override
+    public boolean imitateCrowdChange(Map<String, String> changes) {
+        changes.forEach((key, value) -> neo4jAttractionRepository
+                .updateCurrentByAttractionId(Long.parseLong(key), Long.parseLong(value)));
+        return true;
+    }
+
+    @Override
+    public BestRouteResultVo getMultipleBestPath(List<Long> attractionIds) {
+        BestRouteResultVo realtimeHamiltonian = neo4jClient
+                .query(
+                        "WITH $nodeIdList as selection\n" +
+                                "MATCH (a:Attraction) where a.attractionId in selection\n" +
+                                "WITH collect(a) as attractions\n" +
+                                "UNWIND attractions as a1\n" +
+                                "WITH a1,\n" +
+                                "     [a in attractions where a.attractionId > a1.attractionId] as a2s,\n" +
+                                "     (size(attractions) - 1) as level,\n" +
+                                "     attractions\n" +
+                                "UNWIND a2s as a2\n" +
+                                "CALL apoc.path.expandConfig(a1, {\n" +
+                                "    relationshipFilter: 'SHORTEST_PATH',\n" +
+                                "    minLevel: level,\n" +
+                                "    maxLevel: level,\n" +
+                                "    whitelistNodes: attractions,\n" +
+                                "    terminatorNode: [a2],\n" +
+                                "    uniqueness: 'NODE_PATH'\n" +
+                                "}) YIELD path\n" +
+                                "WITH nodes(path) as orderedAttractions,\n" +
+                                "    [n in nodes(path) | n.attractionId] as ids,\n" +
+                                "    reduce (cost = 0.0, x in relationships(path) | cost + x.costs[0]) as totalCost,\n" +
+                                "    [r in relationships(path) | r.bestPath] as shortestRouteNodeIds\n" +
+                                "    order by totalCost LIMIT 1\n" +
+                                "UNWIND range(0, size(orderedAttractions) - 1) as index\n" +
+                                "UNWIND shortestRouteNodeIds[index] as shortestViaNodeId\n" +
+                                "WITH orderedAttractions, totalCost, index,\n" +
+                                "    CASE WHEN shortestRouteNodeIds[index][0] = ids[index]\n" +
+                                "    THEN tail(collect(shortestViaNodeId))\n" +
+                                "        ELSE tail(reverse(collect(shortestViaNodeId)))\n" +
+                                "        END as orderedViaNodeIds\n" +
+                                "  ORDER BY index\n" +
+                                "UNWIND orderedViaNodeIds as orderedViaNodeId\n" +
+                                "MATCH (c:Attraction) where id(c) = orderedViaNodeId\n" +
+                                "RETURN [orderedAttractions[0].attractionId] + collect(c.attractionId) as viaNodeIds, totalCost"
+                )
+                .bind(attractionIds).to("nodeIdList")
+                .fetchAs(BestRouteResultVo.class)
+                .mappedBy((typeSystem, record) -> new BestRouteResultVo(record.get("viaNodeIds").asList()
+                        .stream().map(v -> (Long) v)
+                        .collect(Collectors.toList()),
+                        record.get("totalCost").asDouble()))
+                .one().orElse(null);
+        return realtimeHamiltonian;
     }
 }

@@ -99,7 +99,9 @@ public class NoticeServiceImpl implements NoticeService {
             return null;
         }
         return PageVo.builder()
-                .data(Collections.singletonList(NoticeMapper.INSTANCE.toDtoList(notices.getContent())))
+                .data(Collections.singletonList(NoticeMapper.INSTANCE
+                        .toDtoList(notices.getContent().stream()
+                                .filter(notice -> notice.getScope() == 1).collect(Collectors.toList()))))
                 .totalElements(notices.getTotalElements())
                 .totalPages(notices.getTotalPages())
                 .build();

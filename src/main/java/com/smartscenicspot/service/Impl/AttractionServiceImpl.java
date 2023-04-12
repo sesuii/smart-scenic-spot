@@ -91,18 +91,15 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    @Transactional(value = "pgqlTransactionManger")
+    @Transactional(value = "pgqlTransactionManger", rollbackFor = Exception.class)
     public boolean changeStatus(Long attractionId) {
-        // FIXME neo4j 同步状态
         Attraction attraction = attractionRepository.findById(attractionId).orElse(null);
         if(attraction == null) {
             return false;
         }
-        boolean changedPG = attractionRepository.updateStatusById(attraction.getStatus() == (byte) 1
+        attractionRepository.updateStatusById(attraction.getStatus() == (byte) 1
                 ? (byte) 0 : (byte) 1, attractionId);
-        boolean changedN4J = neo4jService.changeStatus(attractionId);
-        // FIXME 通知
-        return changedPG && changedN4J;
+        return neo4jService.changeStatus(attractionId, (int) attraction.getStatus());
     }
 
 }

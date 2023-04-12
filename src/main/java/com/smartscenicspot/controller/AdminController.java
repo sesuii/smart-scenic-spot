@@ -5,11 +5,13 @@ import com.smartscenicspot.dto.AttractionUpdateDto;
 import com.smartscenicspot.dto.NoticeDto;
 import com.smartscenicspot.service.AdminService;
 import com.smartscenicspot.service.AttractionService;
+import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.service.NoticeService;
 import com.smartscenicspot.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 景区管理模块
@@ -31,6 +33,9 @@ public class AdminController {
     @Resource
     NoticeService noticeService;
 
+    @Resource
+    Neo4jService neo4jService;
+
     @GetMapping("/info")
     public Result<?> getAdminInfo() {
         AdminDto adminDto = adminService.getAdminInfo();
@@ -49,11 +54,15 @@ public class AdminController {
         return Result.success();
     }
 
-    @PutMapping("/attraction-switch/{id}")
-    public Result<?> changeStatusOfAttraction(@PathVariable Long attractionId) {
+    @PutMapping("/attraction-switch/{attractionId}")
+    public Result<?> changeStatusOfAttraction(@PathVariable("attractionId") Long attractionId) {
         boolean closed = attractionService.changeStatus(attractionId);
         return Result.success(closed);
     }
 
-
+    @PostMapping("/imitate-crowd")
+    public Result<?> imitateCrowdChange(@RequestBody Map<String, String> changes) {
+        boolean changed = neo4jService.imitateCrowdChange(changes);
+        return Result.success(changed);
+    }
 }

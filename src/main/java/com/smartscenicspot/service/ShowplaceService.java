@@ -11,7 +11,7 @@ import java.util.List;
  **/
 public interface ShowplaceService {
     /**
-     * 根据用户的模糊经纬度找到范围 3km 内的景区
+     * 根据用户的模糊经纬度找到范围 3km 内的景点
      *
      * @param lat 维度
      * @param lng 经度

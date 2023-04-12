@@ -4,6 +4,7 @@ import com.smartscenicspot.constant.ResultEnum;
 import com.smartscenicspot.dto.StaticRouteDto;
 import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.service.StaticRouteService;
+import com.smartscenicspot.vo.BestRouteResultVo;
 import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.Result;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +47,12 @@ public class RouteController {
     @GetMapping("/walking/single-source")
     public Result<?> pathToSingleSource(@RequestParam Long sourceId, @RequestParam Long targetId) {
         List<Long> viaNodes = neo4jService.getSingleSourcePath(sourceId, targetId);
-        return null;
+        return Result.success(viaNodes);
     }
 
     @PostMapping("/walking/multiple")
-    public Result<?> realtimeHamiltonian() {
-
-        return null;
+    public Result<?> realtimeHamiltonian(@RequestBody List<Long> attractionIds) {
+        BestRouteResultVo route = neo4jService.getMultipleBestPath(attractionIds);
+        return Result.success(route);
     }
 }
