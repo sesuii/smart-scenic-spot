@@ -58,4 +58,5 @@ public class TourGroupController {
         boolean exit = tourGroupService.exitGroup();
         return Result.success(exit);
     }
+
 }

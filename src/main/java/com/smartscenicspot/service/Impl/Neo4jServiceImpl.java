@@ -35,7 +35,7 @@ public class Neo4jServiceImpl implements Neo4jService {
     @Override
     public List<Long> getSingleSourcePath(Long sourceId, Long targetId) {
         ShortestPathsRelationship paths = neo4jAttractionRepository.shortestPaths(sourceId, targetId);
-        String firstPath = paths.getShortestPaths().get(0);
+        String firstPath = paths.getViaPaths().get(0);
         return Arrays.stream(firstPath.split(" "))
                 .mapToLong(Long::parseLong)
                 .boxed()

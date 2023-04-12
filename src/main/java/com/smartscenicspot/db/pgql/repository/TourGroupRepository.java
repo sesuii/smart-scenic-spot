@@ -15,4 +15,6 @@ public interface TourGroupRepository extends JpaRepository<TourGroup, Long> {
     int updateGroupSizeBy(Integer groupSize);
 
     Optional<TourGroup> findByInviteCode(String inviteCode);
+    @Query("select count(t) from TourGroup t where t.status = 1")
+    int activeGroupCount();
 }

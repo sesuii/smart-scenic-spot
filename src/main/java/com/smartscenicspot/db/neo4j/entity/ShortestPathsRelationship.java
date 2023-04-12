@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
+import org.springframework.data.neo4j.core.schema.TargetNode;
 
 import java.util.List;
 
@@ -19,7 +20,10 @@ public class ShortestPathsRelationship {
     @RelationshipId
     private Long id;
 
-    private List<String> shortestPaths;
+    @TargetNode
+    private AttractionNode attractionNode;
+
+    private List<String> viaPaths;
 
     private List<Double> costs;
 

@@ -42,6 +42,9 @@ public class TourGroup extends AuditModel {
     @Column(name = "group_limit_size", columnDefinition = "int4 default 100")
     private Integer groupLimitSize;
 
+    /**
+     * 1表示活跃
+     */
     @Column(name = "status", columnDefinition = "smallint default 1")
     private Byte status;
 

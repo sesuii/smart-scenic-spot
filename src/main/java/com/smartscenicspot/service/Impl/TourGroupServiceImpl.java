@@ -105,4 +105,9 @@ public class TourGroupServiceImpl implements TourGroupService {
         userRepository.updateTourGroupByOpenid(null, account);
         return true;
     }
+
+    @Override
+    public int countActiveGroups() {
+        return tourGroupRepository.activeGroupCount();
+    }
 }

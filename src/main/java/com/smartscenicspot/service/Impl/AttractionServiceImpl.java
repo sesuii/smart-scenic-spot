@@ -91,7 +91,7 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(value = "pgqlTransactionManger")
     public boolean changeStatus(Long attractionId) {
         // FIXME neo4j 同步状态
         Attraction attraction = attractionRepository.findById(attractionId).orElse(null);

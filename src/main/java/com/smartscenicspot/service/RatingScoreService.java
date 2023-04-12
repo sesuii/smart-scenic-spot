@@ -1,6 +1,7 @@
 package com.smartscenicspot.service;
 
 import com.smartscenicspot.dto.RatingScoreDto;
+import com.smartscenicspot.vo.DailyHotVo;
 import com.smartscenicspot.vo.PageVo;
 
 /**
@@ -17,4 +18,5 @@ public interface RatingScoreService {
 
     boolean deleteRatingScore(Long id);
 
+    DailyHotVo getHotDataByTimeSlot(String st, String et);
 }
