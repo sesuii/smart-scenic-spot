@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author jiahui
  */
 public interface AttractionRepository extends JpaRepository<Attraction, Long> {
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Modifying
     @Query("update Attraction a set a.status = ?1 where a.id = ?2")
-    int updateStatusById(Byte status, Long id);
+    boolean updateStatusById(Byte status, Long id);
 }

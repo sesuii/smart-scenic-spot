@@ -1,19 +1,25 @@
 package com.smartscenicspot.service.Impl;
 
-import com.smartscenicspot.dto.RatingScoreDto;
-import com.smartscenicspot.mapper.RatingScoreMapper;
 import com.smartscenicspot.db.pgql.entity.RatingScore;
 import com.smartscenicspot.db.pgql.repository.RatingScoreRepository;
+import com.smartscenicspot.dto.RatingScoreDto;
+import com.smartscenicspot.mapper.RatingScoreMapper;
 import com.smartscenicspot.service.RatingScoreService;
+import com.smartscenicspot.vo.DailyHotVo;
 import com.smartscenicspot.vo.PageVo;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 游客评分业务实现
@@ -73,4 +79,31 @@ public class RatingScoreServiceImpl implements RatingScoreService {
         ratingScoreRepository.deleteById(id);
         return true;
     }
+
+
+    @Override
+    @Transactional(value = "pgqlTransactionManger", rollbackFor = Exception.class)
+    public DailyHotVo getHotDataByTimeSlot(String st, String et) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime, endTime;
+        try {
+            startTime = format.parse(st);
+            endTime = format.parse(et);
+        } catch (ParseException e) {
+            startTime = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+            endTime = new Date();
+        }
+        DailyHotVo dailyHotVo = DailyHotVo.builder()
+                .startTime(startTime)
+                .endTime(endTime)
+                .dailyVisitors(ratingScoreRepository.countByGmtModifiedBetween(startTime, endTime))
+                .build();
+        List<Map<String, Object>> queryResult = ratingScoreRepository.groupCountByAttraction(startTime, endTime);
+        dailyHotVo.setTopAttraction(queryResult.stream().collect(Collectors.toMap(
+                map -> (String) map.get("name"),
+                map -> (Long) map.get("cnt")
+                )));
+        return dailyHotVo;
+    }
+
 }

@@ -20,4 +20,6 @@ public interface TourGroupService {
     boolean deleteGroup(Long groupId);
 
     boolean exitGroup();
+
+    int countActiveGroups();
 }

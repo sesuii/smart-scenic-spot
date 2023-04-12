@@ -43,7 +43,11 @@ public class AttractionNode {
     @Relationship(type = "WALKING")
     private Set<WalkingRelationship> walkingRoutes;
 
-//    @Relationship(type = "SHORTEST_PATH_TO")
-//    private Set<ShortestPathsRelationship> shortestPaths;
+    @Relationship(type = "SHORTEST_PATH")
+    private Set<ShortestPathsRelationship> shortestPaths;
+
+    public AttractionNode(Long attractionId) {
+        this.attractionId = attractionId;
+    }
 
 }

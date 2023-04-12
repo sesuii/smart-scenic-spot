@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 认证授权管理
+ * 认证授权管理模块
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/2/27 22:01

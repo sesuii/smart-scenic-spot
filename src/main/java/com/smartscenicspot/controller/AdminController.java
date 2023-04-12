@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
- * 景区管理员控制类
+ * 景区管理模块
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/23 22:54
@@ -49,9 +49,9 @@ public class AdminController {
         return Result.success();
     }
 
-    @PutMapping("/close-attraction/{id}")
-    public Result<?> closeAttraction(@PathVariable Long attractionId) {
-        boolean closed = attractionService.closeAttraction(attractionId);
+    @PutMapping("/attraction-switch/{id}")
+    public Result<?> changeStatusOfAttraction(@PathVariable Long attractionId) {
+        boolean closed = attractionService.changeStatus(attractionId);
         return Result.success(closed);
     }
 

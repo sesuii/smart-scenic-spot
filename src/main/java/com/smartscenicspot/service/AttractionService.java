@@ -24,5 +24,5 @@ public interface AttractionService {
 
     List<StaffDto> getStaffs(Long id);
 
-    boolean closeAttraction(Long attractionId);
+    boolean changeStatus(Long attractionId);
 }
