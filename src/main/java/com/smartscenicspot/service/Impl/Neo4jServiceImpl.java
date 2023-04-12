@@ -2,14 +2,18 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.db.neo4j.entity.ShortestPathsRelationship;
 import com.smartscenicspot.db.neo4j.repository.Neo4jAttractionRepository;
+import com.smartscenicspot.db.pgql.repository.AttractionRepository;
 import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.vo.BestRouteResultVo;
+import com.smartscenicspot.vo.RouteQueryVo;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +27,9 @@ public class Neo4jServiceImpl implements Neo4jService {
     Neo4jAttractionRepository neo4jAttractionRepository;
 
     @Resource
+    AttractionRepository attractionRepository;
+
+    @Resource
     Neo4jClient neo4jClient;
 
     @Override
@@ -32,8 +39,25 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public List<Long> getSingleSourcePath(Long sourceId, Long targetId) {
-        ShortestPathsRelationship paths = neo4jAttractionRepository.shortestPaths(sourceId, targetId);
+    public List<Long> getSingleSourcePath(RouteQueryVo routeQueryVo) {
+        // FIXME 映射失效
+        Long sourceId = attractionRepository
+                .findNearestAttraction(routeQueryVo.getLatitude(), routeQueryVo.getLongitude()).getId();
+        Long targetId = routeQueryVo.getTarget().get(0);
+        ShortestPathsRelationship paths = neo4jClient.query(
+                "MATCH (n1:Attraction)-[p:SHORTEST_PATH]-(n2:Attraction) " +
+                        "WHERE n1.attractionId = $source AND n2.attractionId = $target RETURN p.viaPaths as viaPaths"
+                )
+                .bind(sourceId).to("source")
+                .bind(targetId).to("target")
+                .fetchAs(ShortestPathsRelationship.class)
+                .mappedBy((typeSystem, record) -> new ShortestPathsRelationship(
+                    record.get("viaPaths").asList().stream().map(v -> (String) v)
+                            .collect(Collectors.toList()
+                ))).one().orElse(null);
+        if(paths == null) {
+            return null;
+        }
         String firstPath = paths.getViaPaths().get(0);
         return Arrays.stream(firstPath.split(" "))
                 .mapToLong(Long::parseLong)

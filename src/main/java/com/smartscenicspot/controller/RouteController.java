@@ -7,6 +7,7 @@ import com.smartscenicspot.service.StaticRouteService;
 import com.smartscenicspot.vo.BestRouteResultVo;
 import com.smartscenicspot.vo.PageVo;
 import com.smartscenicspot.vo.Result;
+import com.smartscenicspot.vo.RouteQueryVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -44,9 +45,9 @@ public class RouteController {
         return Result.success(pageVo);
     }
 
-    @GetMapping("/walking/single-source")
-    public Result<?> pathToSingleSource(@RequestParam Long sourceId, @RequestParam Long targetId) {
-        List<Long> viaNodes = neo4jService.getSingleSourcePath(sourceId, targetId);
+    @PostMapping("/walking/single-source")
+    public Result<?> pathToSingleSource(@RequestBody RouteQueryVo routeQueryVo) {
+        List<Long> viaNodes = neo4jService.getSingleSourcePath(routeQueryVo);
         return Result.success(viaNodes);
     }
 

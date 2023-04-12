@@ -24,8 +24,8 @@ public interface Neo4jAttractionRepository extends Neo4jRepository<AttractionNod
 
     @Query("MATCH (n1:Attraction)-[p:SHORTEST_PATH]-(n2:Attraction) " +
             "WHERE n1.attractionId = $source AND n2.attractionId = $target RETURN p")
-    ShortestPathsRelationship shortestPaths(@Param("source") Long sourceId,
-                                            @Param("target") Long targetId);
+    ShortestPathsRelationship shortestPaths(@Param("source") Long source,
+                                            @Param("target") Long target);
     @Modifying
     @Transactional
     @Query("MATCH (n:Attraction) WHERE n.attractionId = $id SET n.current = $current")

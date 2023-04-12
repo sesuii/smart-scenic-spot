@@ -14,4 +14,8 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     @Modifying
     @Query("update Attraction a set a.status = ?1 where a.id = ?2")
     void updateStatusById(Byte status, Long id);
+
+    @Query(value = "select * from tb_attraction a order by calcDistance(row(29.565890, 115.971000)\\:\\:location, " +
+            "row(a.latitude, a.longitude)\\:\\:location) ASC LIMIT 1", nativeQuery = true)
+    Attraction findNearestAttraction(Double lat, Double lng);
 }

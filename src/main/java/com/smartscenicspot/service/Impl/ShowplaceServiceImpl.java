@@ -5,7 +5,6 @@ import com.smartscenicspot.db.pgql.entity.Showplace;
 import com.smartscenicspot.db.pgql.repository.ShowplaceRepository;
 import com.smartscenicspot.dto.ShowplaceDto;
 import com.smartscenicspot.mapper.ShowplaceMapper;
-import com.smartscenicspot.service.AttractionService;
 import com.smartscenicspot.service.ShowplaceService;
 import com.smartscenicspot.vo.ShowplaceVo;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +26,6 @@ public class ShowplaceServiceImpl implements ShowplaceService {
 
     @Resource
     ShowplaceRepository showplaceRepository;
-
-    @Resource
-    AttractionService attractionService;
 
     @Override
     public ShowplaceVo matchFuzzyPosition(double lat, double lng) {

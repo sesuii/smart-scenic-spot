@@ -1,6 +1,7 @@
 package com.smartscenicspot.service;
 
 import com.smartscenicspot.vo.BestRouteResultVo;
+import com.smartscenicspot.vo.RouteQueryVo;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public interface Neo4jService {
 
     List<?> getDynamicInfo();
 
-    List<Long> getSingleSourcePath(Long sourceId, Long targetId);
+    List<Long> getSingleSourcePath(RouteQueryVo routeQueryVo);
 
     boolean changeStatus(Long attractionId, Integer status);
 
