@@ -3,12 +3,16 @@ package com.smartscenicspot.service.Impl;
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.constant.SecurityConstant;
 import com.smartscenicspot.db.pgql.entity.InterestTag;
+import com.smartscenicspot.db.pgql.entity.Recommendation;
+import com.smartscenicspot.dto.RecommendationDto;
 import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.db.pgql.repository.AttractionRepository;
 import com.smartscenicspot.db.pgql.repository.InterestTagRepository;
+import com.smartscenicspot.db.pgql.repository.RecommendationRepository;
 import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.dto.InterestTagDto;
 import com.smartscenicspot.mapper.InterestTagMapper;
+import com.smartscenicspot.mapper.RecommendationMapper;
 import com.smartscenicspot.mapper.UserMapper;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.utils.JwtUtil;
@@ -42,6 +46,8 @@ public class UserServiceImpl implements UserService {
     @Resource
     UserRepository userRepository;
 
+    @Resource
+    RecommendationRepository recommendationRepository;
     @Resource
     InterestTagRepository interestTagRepository;
     private final AttractionRepository attractionRepository;
@@ -115,6 +121,15 @@ public class UserServiceImpl implements UserService {
                 .totalElements(users.getTotalElements())
                 .totalPages(users.getTotalPages())
                 .build();
+    }
+
+    @Override
+    public List<RecommendationDto> getUserRecommendation() {
+        String openid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByOpenid(openid).orElse(null);
+        List<Recommendation> recommendations = recommendationRepository
+                .findAllByUser(user, Sort.by("propensity").descending());
+        return RecommendationMapper.INSTANCE.toDtoList(recommendations);
     }
 
 }

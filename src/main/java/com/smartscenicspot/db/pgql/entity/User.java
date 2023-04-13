@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 用户类
@@ -64,7 +63,7 @@ public class User extends AuditModel {
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
-    private Set<RatingScore> ratingScores;
+    private List<RatingScore> ratingScores;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showplace_id")

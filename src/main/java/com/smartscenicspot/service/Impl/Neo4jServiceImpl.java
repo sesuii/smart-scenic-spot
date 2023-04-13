@@ -82,7 +82,7 @@ public class Neo4jServiceImpl implements Neo4jService {
     public BestRouteResultVo getMultipleBestPath(List<Long> attractionIds) {
         BestRouteResultVo realtimeHamiltonian = neo4jClient
                 .query(
-                        "WITH $nodeIdList as selection\n" +
+                                "WITH $nodeIdList as selection\n" +
                                 "MATCH (a:Attraction) where a.attractionId in selection\n" +
                                 "WITH collect(a) as attractions\n" +
                                 "UNWIND attractions as a1\n" +
@@ -100,8 +100,8 @@ public class Neo4jServiceImpl implements Neo4jService {
                                 "    uniqueness: 'NODE_PATH'\n" +
                                 "}) YIELD path\n" +
                                 "WITH nodes(path) as orderedAttractions,\n" +
-                                "    [n in nodes(path) | n.attractionId] as ids,\n" +
-                                "    reduce (cost = 0.0, x in relationships(path) | cost + x.costs[0]) as totalCost,\n" +
+                                "    [n in nodes(path) | id(n)] as ids,\n" +
+                                "    reduce (cost = 0, x in relationships(path) | cost + x.costs[0]) as totalCost,\n" +
                                 "    [r in relationships(path) | r.bestPath] as shortestRouteNodeIds\n" +
                                 "    order by totalCost LIMIT 1\n" +
                                 "UNWIND range(0, size(orderedAttractions) - 1) as index\n" +
@@ -114,7 +114,8 @@ public class Neo4jServiceImpl implements Neo4jService {
                                 "  ORDER BY index\n" +
                                 "UNWIND orderedViaNodeIds as orderedViaNodeId\n" +
                                 "MATCH (c:Attraction) where id(c) = orderedViaNodeId\n" +
-                                "RETURN [orderedAttractions[0].attractionId] + collect(c.attractionId) as viaNodeIds, totalCost"
+                                "RETURN [orderedAttractions[0].attractionId] + collect(c.attractionId) as viaNodeIds,\n" +
+                                "       totalCost"
                 )
                 .bind(attractionIds).to("nodeIdList")
                 .fetchAs(BestRouteResultVo.class)

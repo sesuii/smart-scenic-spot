@@ -8,7 +8,9 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
+        componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RatingScoreMapper {
 
     RatingScoreMapper INSTANCE = Mappers.getMapper(RatingScoreMapper.class);
@@ -20,7 +22,7 @@ public interface RatingScoreMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     RatingScore partialUpdate(RatingScoreDto ratingScoreDto, @MappingTarget RatingScore ratingScore);
 
-    List<RatingScoreDto> toDtos(List<RatingScore> content);
+    List<RatingScoreDto> toDtos(List<RatingScore> ratingScores);
 
     @Mapping(source = "attractionName", target = "attraction.name")
     @Mapping(source = "attractionId", target = "attraction.id")
@@ -31,8 +33,9 @@ public interface RatingScoreMapper {
     @InheritInverseConfiguration(name = "voToEntity")
     RatingScoreVo toVo(RatingScore ratingScore);
 
+    List<RatingScoreVo> toVoList(List<RatingScore> ratingScores);
+
     @InheritConfiguration(name = "voToEntity")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     RatingScore partialUpdateByVo(RatingScoreVo ratingScoreVo, @MappingTarget RatingScore ratingScore);
 
 }

@@ -1,5 +1,6 @@
 package com.smartscenicspot.service;
 
+import com.smartscenicspot.dto.RecommendationDto;
 import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.dto.InterestTagDto;
 import com.smartscenicspot.vo.PageVo;
@@ -33,4 +34,6 @@ public interface UserService {
     User getUserByOpenid(String openid);
 
     PageVo<?> analyseUserInfo(int page, int size);
+
+    List<RecommendationDto> getUserRecommendation();
 }

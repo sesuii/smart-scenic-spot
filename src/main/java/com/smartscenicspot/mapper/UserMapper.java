@@ -9,6 +9,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
@@ -25,20 +26,13 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
-    List<UserDto> toDtoList(List<User> users);
-
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User partialUpdateByDto(UserDto userDto, @MappingTarget User user);
 
     @AfterMapping
-    default void linkRatingScores(@MappingTarget User user) {
-        user.getRatingScores().forEach(ratingScore -> ratingScore.setUser(user));
+    default void mapperNestAttributes(User user, @MappingTarget UserDto userDto) {
+        userDto.setRatingScores(RatingScoreMapper.INSTANCE.toVoList(user.getRatingScores()));
+        userDto.setRecommendationList(RecommendationMapper.INSTANCE.toDtoList(user.getRecommendationList()));
     }
 
-    @AfterMapping
-    default void linkRecommendationList(@MappingTarget User user) {
-        user.getRecommendationList().forEach(recommendationList -> recommendationList.setUser(user));
-    }
-
+    List<UserDto> toDtoList(List<User> users);
 }

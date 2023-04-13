@@ -1,6 +1,7 @@
 package com.smartscenicspot.controller;
 
 import com.smartscenicspot.constant.ResultEnum;
+import com.smartscenicspot.dto.RecommendationDto;
 import com.smartscenicspot.dto.InterestTagDto;
 import com.smartscenicspot.service.UserService;
 import com.smartscenicspot.vo.Result;
@@ -45,6 +46,12 @@ public class UserController {
     public Result<?> getAllTags() {
         List<InterestTagDto> tagList = userService.getAllTags();
         return Result.success(tagList);
+    }
+
+    @GetMapping("/user-recommend")
+    public Result<?> getRecommendation() {
+        List<RecommendationDto> recommendationDtos = userService.getUserRecommendation();
+        return Result.success(recommendationDtos);
     }
 
 }
