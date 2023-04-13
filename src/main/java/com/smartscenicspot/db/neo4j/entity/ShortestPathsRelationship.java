@@ -20,8 +20,9 @@ public class ShortestPathsRelationship {
     @RelationshipId
     private Long id;
 
-    public ShortestPathsRelationship(List<String> viaPaths) {
+    public ShortestPathsRelationship(List<String> viaPaths, List<Double> costs) {
         this.viaPaths = viaPaths;
+        this.costs = costs;
     }
 
     @TargetNode

@@ -1,17 +1,21 @@
 package com.smartscenicspot.service.Impl;
 
+import com.smartscenicspot.db.neo4j.entity.AttractionNode;
 import com.smartscenicspot.db.neo4j.entity.ShortestPathsRelationship;
 import com.smartscenicspot.db.neo4j.repository.Neo4jAttractionRepository;
 import com.smartscenicspot.db.pgql.repository.AttractionRepository;
+import com.smartscenicspot.mapper.AttractionMapper;
 import com.smartscenicspot.service.Neo4jService;
 import com.smartscenicspot.vo.BestRouteResultVo;
 import com.smartscenicspot.vo.RouteQueryVo;
+import org.neo4j.driver.Value;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,30 +43,42 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public List<Long> getSingleSourcePath(RouteQueryVo routeQueryVo) {
-        // FIXME 映射失效
+    public BestRouteResultVo getSingleSourcePath(RouteQueryVo routeQueryVo) {
         Long sourceId = attractionRepository
                 .findNearestAttraction(routeQueryVo.getLatitude(), routeQueryVo.getLongitude()).getId();
-        Long targetId = routeQueryVo.getTarget().get(0);
+        if(sourceId.equals(routeQueryVo.getTarget())) {
+            return BestRouteResultVo.builder()
+                    .viaNodeIds(List.of(sourceId))
+                    .attractionRouteVos(AttractionMapper.INSTANCE
+                            .toRouteVoList(attractionRepository.findByIdIn(List.of(sourceId))))
+                    .build();
+        }
         ShortestPathsRelationship paths = neo4jClient.query(
                 "MATCH (n1:Attraction)-[p:SHORTEST_PATH]-(n2:Attraction) " +
-                        "WHERE n1.attractionId = $source AND n2.attractionId = $target RETURN p.viaPaths as viaPaths"
+                    "WHERE n1.attractionId = $source AND n2.attractionId = $target " +
+                    "RETURN p.viaPaths as viaPaths, p.costs as totalCost"
                 )
                 .bind(sourceId).to("source")
-                .bind(targetId).to("target")
+                .bind(routeQueryVo.getTarget()).to("target")
                 .fetchAs(ShortestPathsRelationship.class)
                 .mappedBy((typeSystem, record) -> new ShortestPathsRelationship(
-                    record.get("viaPaths").asList().stream().map(v -> (String) v)
-                            .collect(Collectors.toList()
-                ))).one().orElse(null);
+                    record.get("viaPaths").asList(Value::asString),
+                        record.get("totalCost").asList(Value::asDouble))).one().orElse(null);
         if(paths == null) {
             return null;
         }
-        String firstPath = paths.getViaPaths().get(0);
-        return Arrays.stream(firstPath.split(" "))
-                .mapToLong(Long::parseLong)
-                .boxed()
+        List<Long> result =  Arrays.stream(paths.getViaPaths().get(0).split(" "))
+                .map(Long::parseLong)
                 .collect(Collectors.toList());
+        if(!result.get(0).equals(sourceId)) {
+            Collections.reverse(result);
+        }
+        return BestRouteResultVo.builder()
+                .viaNodeIds(result)
+                .totalCost(paths.getCosts().get(0))
+                .attractionRouteVos(AttractionMapper.INSTANCE
+                        .toRouteVoList(attractionRepository.findByIdIn(result)))
+                .build();
     }
 
     @Override
@@ -119,11 +135,17 @@ public class Neo4jServiceImpl implements Neo4jService {
                 )
                 .bind(attractionIds).to("nodeIdList")
                 .fetchAs(BestRouteResultVo.class)
-                .mappedBy((typeSystem, record) -> new BestRouteResultVo(record.get("viaNodeIds").asList()
-                        .stream().map(v -> (Long) v)
-                        .collect(Collectors.toList()),
+                .mappedBy((typeSystem, record) -> new BestRouteResultVo(
+                        record.get("viaNodeIds").asList(Value::asLong),
                         record.get("totalCost").asDouble()))
                 .one().orElse(null);
+        realtimeHamiltonian.setAttractionRouteVos(AttractionMapper.INSTANCE
+                .toRouteVoList(attractionRepository.findByIdIn(realtimeHamiltonian.getViaNodeIds())));
         return realtimeHamiltonian;
+    }
+
+    @Override
+    public List<AttractionNode> getOverCapacity() {
+        return neo4jAttractionRepository.findOverCapacityNodes();
     }
 }

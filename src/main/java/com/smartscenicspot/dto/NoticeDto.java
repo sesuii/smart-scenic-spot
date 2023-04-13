@@ -1,10 +1,7 @@
 package com.smartscenicspot.dto;
 
 import com.smartscenicspot.db.pgql.entity.Notice;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -18,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@ToString
 public class NoticeDto implements Serializable {
     private long id;
     private Date publishTime;

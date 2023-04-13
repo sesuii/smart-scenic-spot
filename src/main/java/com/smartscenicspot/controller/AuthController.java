@@ -8,7 +8,10 @@ import com.smartscenicspot.vo.AdminVo;
 import com.smartscenicspot.vo.Result;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -51,11 +54,11 @@ public class AuthController {
     }
 
 
-    @GetMapping(value = "/logout")
+    @PostMapping(value = "/logout")
     public Result<?> logout() {
         String account = (String) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        redisTemplate.opsForValue().getAndDelete(RedisConstant.USER_PREFIX + account);
+        redisTemplate.delete(RedisConstant.USER_PREFIX + account);
         return Result.success("LOGOUT SUCCESS");
     }
 }

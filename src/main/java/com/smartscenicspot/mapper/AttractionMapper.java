@@ -1,6 +1,7 @@
 package com.smartscenicspot.mapper;
 
 import com.smartscenicspot.dto.AttractionQueryDto;
+import com.smartscenicspot.vo.AttractionRouteVo;
 import com.smartscenicspot.dto.AttractionUpdateDto;
 import com.smartscenicspot.db.pgql.entity.Attraction;
 import com.smartscenicspot.vo.AttractionVo;
@@ -31,6 +32,9 @@ public interface AttractionMapper {
 
     Attraction QueryDtoToEntity(AttractionQueryDto attractionQueryDto);
 
-    // FIXME @AfterMapping 不起作用，根据文档换成抽象类后无法映射
+    Attraction toEntity(AttractionRouteVo attractionRouteVo);
 
+    AttractionRouteVo toRouteVo(Attraction attraction);
+
+    List<AttractionRouteVo> toRouteVoList(List<Attraction> byIdIn);
 }

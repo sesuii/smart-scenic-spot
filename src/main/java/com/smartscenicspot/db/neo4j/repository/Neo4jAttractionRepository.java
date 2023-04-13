@@ -1,7 +1,6 @@
 package com.smartscenicspot.db.neo4j.repository;
 
 import com.smartscenicspot.db.neo4j.entity.AttractionNode;
-import com.smartscenicspot.db.neo4j.entity.ShortestPathsRelationship;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -22,14 +21,13 @@ public interface Neo4jAttractionRepository extends Neo4jRepository<AttractionNod
     @Query("MATCH (n:Attraction) return n")
     List<AttractionNode> findNodes();
 
-    @Query("MATCH (n1:Attraction)-[p:SHORTEST_PATH]-(n2:Attraction) " +
-            "WHERE n1.attractionId = $source AND n2.attractionId = $target RETURN p")
-    ShortestPathsRelationship shortestPaths(@Param("source") Long source,
-                                            @Param("target") Long target);
     @Modifying
     @Transactional
     @Query("MATCH (n:Attraction) WHERE n.attractionId = $id SET n.current = $current")
-    void updateCurrentByAttractionId(@Param("id") Long attractionId, @Param("current") Long current);
+    void updateCurrentByAttractionId(@Param("id") Long id, @Param("current") Long current);
+
+    @Query("MATCH (n:Attraction) where n.current >= n.capacity * 0.9 return n")
+    List<AttractionNode> findOverCapacityNodes();
 
     @Modifying
     @Transactional

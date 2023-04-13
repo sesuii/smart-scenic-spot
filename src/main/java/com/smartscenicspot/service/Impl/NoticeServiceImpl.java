@@ -135,12 +135,17 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public boolean deleteGroupNotice(Long id) {
-        // TODO 1. 鉴权 2. 删除公告
         Notice notice = noticeRepository.findById(id).orElse(null);
-        if(notice == null) {
-            return true;
+        if(notice.getScope() == (byte) 0) {
+            noticeRepository.delete(notice);
         }
-
+        else {
+            String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(notice.getTourGroup().getCreator() != userRepository.findByOpenid(account).orElse(null)) {
+                return false;
+            }
+            noticeRepository.delete(notice);
+        }
         return true;
     }
 }

@@ -16,7 +16,14 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 public class BestRouteResultVo implements Serializable {
     List<Long> viaNodeIds;
-    Double totalCost;
+    List<AttractionRouteVo> attractionRouteVos;
+    Double totalCost = 0.0;
+
+    public BestRouteResultVo(List<Long> viaNodeIds, double totalCost) {
+        this.viaNodeIds = viaNodeIds;
+        this.totalCost = totalCost;
+    }
 }

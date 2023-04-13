@@ -1,5 +1,6 @@
 package com.smartscenicspot.service;
 
+import com.smartscenicspot.db.neo4j.entity.AttractionNode;
 import com.smartscenicspot.vo.BestRouteResultVo;
 import com.smartscenicspot.vo.RouteQueryVo;
 
@@ -14,11 +15,13 @@ public interface Neo4jService {
 
     List<?> getDynamicInfo();
 
-    List<Long> getSingleSourcePath(RouteQueryVo routeQueryVo);
+    BestRouteResultVo getSingleSourcePath(RouteQueryVo routeQueryVo);
 
     boolean changeStatus(Long attractionId, Integer status);
 
     boolean imitateCrowdChange(Map<String, String> changes);
 
     BestRouteResultVo getMultipleBestPath(List<Long> attractionIds);
+
+    List<AttractionNode> getOverCapacity();
 }

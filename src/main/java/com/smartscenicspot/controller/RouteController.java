@@ -47,8 +47,8 @@ public class RouteController {
 
     @PostMapping("/walking/single-source")
     public Result<?> pathToSingleSource(@RequestBody RouteQueryVo routeQueryVo) {
-        List<Long> viaNodes = neo4jService.getSingleSourcePath(routeQueryVo);
-        return Result.success(viaNodes);
+        BestRouteResultVo route = neo4jService.getSingleSourcePath(routeQueryVo);
+        return Result.success(route);
     }
 
     @PostMapping("/walking/multiple")
