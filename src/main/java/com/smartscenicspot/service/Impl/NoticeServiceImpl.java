@@ -67,13 +67,6 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public boolean addNewNotice(NoticeDto noticeDto) {
-        Notice notice = NoticeMapper.INSTANCE.toEntity(noticeDto);
-        noticeRepository.save(notice);
-        return true;
-    }
-
-    @Override
     @Async
     public void broadCast(NoticeDto noticeDto) {
         Notice notice = NoticeMapper.INSTANCE.toEntity(noticeDto);

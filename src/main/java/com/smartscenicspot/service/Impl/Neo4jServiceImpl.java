@@ -54,7 +54,7 @@ public class Neo4jServiceImpl implements Neo4jService {
                     .build();
         }
         ShortestPathsRelationship paths = neo4jClient.query(
-                "MATCH (n1:Attraction)-[p:SHORTEST_PATH]-(n2:Attraction) " +
+                "MATCH (n1:Attraction)-[p:SHORTEST_PATH]->(n2:Attraction) " +
                     "WHERE n1.attractionId = $source AND n2.attractionId = $target " +
                     "RETURN p.viaPaths as viaPaths, p.costs as totalCost"
                 )
@@ -88,9 +88,17 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public boolean imitateCrowdChange(Map<String, String> changes) {
-        changes.forEach((key, value) -> neo4jAttractionRepository
-                .updateCurrentByAttractionId(Long.parseLong(key), Long.parseLong(value)));
+    @Transactional(value = "neo4jTransactionManager", rollbackFor = Exception.class)
+    public boolean imitateCrowdChange(Map<String, Long> changes) {
+        String projectionName = "modified";
+        Long attractionId = changes.get("attractionId");
+        Long people = changes.get("people");
+        neo4jAttractionRepository
+                .updateCurrentByAttractionId(attractionId, people);
+        neo4jAttractionRepository.updateCost(attractionId);
+        neo4jAttractionRepository.createGraphProjection(projectionName);
+        neo4jAttractionRepository.updateShortestPath(projectionName);
+        neo4jAttractionRepository.dropGraphProjection(projectionName);
         return true;
     }
 
@@ -98,7 +106,7 @@ public class Neo4jServiceImpl implements Neo4jService {
     public BestRouteResultVo getMultipleBestPath(List<Long> attractionIds) {
         BestRouteResultVo realtimeHamiltonian = neo4jClient
                 .query(
-                                "WITH $nodeIdList as selection\n" +
+                        "WITH $nodeIdList as selection\n" +
                                 "MATCH (a:Attraction) where a.attractionId in selection\n" +
                                 "WITH collect(a) as attractions\n" +
                                 "UNWIND attractions as a1\n" +
@@ -108,7 +116,7 @@ public class Neo4jServiceImpl implements Neo4jService {
                                 "     attractions\n" +
                                 "UNWIND a2s as a2\n" +
                                 "CALL apoc.path.expandConfig(a1, {\n" +
-                                "    relationshipFilter: 'SHORTEST_PATH',\n" +
+                                "    relationshipFilter: 'SHORTEST_PATH>',\n" +
                                 "    minLevel: level,\n" +
                                 "    maxLevel: level,\n" +
                                 "    whitelistNodes: attractions,\n" +
@@ -130,8 +138,7 @@ public class Neo4jServiceImpl implements Neo4jService {
                                 "  ORDER BY index\n" +
                                 "UNWIND orderedViaNodeIds as orderedViaNodeId\n" +
                                 "MATCH (c:Attraction) where id(c) = orderedViaNodeId\n" +
-                                "RETURN [orderedAttractions[0].attractionId] + collect(c.attractionId) as viaNodeIds,\n" +
-                                "       totalCost"
+                                "RETURN [orderedAttractions[0].attractionId] + collect(c.attractionId) as viaNodeIds, totalCost"
                 )
                 .bind(attractionIds).to("nodeIdList")
                 .fetchAs(BestRouteResultVo.class)

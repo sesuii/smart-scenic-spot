@@ -47,6 +47,9 @@ public class TourGroupServiceImpl implements TourGroupService {
         }
         String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUserByOpenid(account);
+        if(user.getTourGroup() == tourGroup) {
+            return false;
+        }
         user.setTourGroup(tourGroup);
         tourGroupRepository.updateGroupSizeBy(tourGroup.getGroupSize() + 1);
         return true;

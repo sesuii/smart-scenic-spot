@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 景区工作人员管理
+ * /admin/staff
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/23 22:58

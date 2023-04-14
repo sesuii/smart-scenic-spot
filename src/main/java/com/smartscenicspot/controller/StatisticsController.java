@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 统计分析模块
+ * /admin/statistics
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/4/9 3:58

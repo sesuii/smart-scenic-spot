@@ -2,11 +2,10 @@ package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.constant.RedisConstant;
 import com.smartscenicspot.service.WebSocketService;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.*;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,8 +43,11 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     @Override
-    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
-        // FIXME 异常消息处理
+    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws IOException {
+        if(message instanceof PingMessage) {
+            ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(200);
+            session.sendMessage(new PongMessage(buffer));
+        }
     }
 
 

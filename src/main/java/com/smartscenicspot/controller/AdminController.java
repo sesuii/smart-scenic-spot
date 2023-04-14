@@ -11,11 +11,10 @@ import com.smartscenicspot.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 景区管理模块
+ * /admin
  *
  * @author <a href="mailto: sjiahui27@gmail.com">songjiahui</a>
  * @since 2023/3/23 22:54
@@ -62,7 +61,7 @@ public class AdminController {
     }
 
     @PostMapping("/imitate-crowd")
-    public Result<?> imitateCrowdChange(@RequestBody Map<String, String> changes) {
+    public Result<?> imitateCrowdChange(@RequestBody Map<String, Long> changes) {
         boolean changed = neo4jService.imitateCrowdChange(changes);
         return Result.success(changed);
     }

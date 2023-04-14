@@ -28,4 +28,6 @@ public class WalkingRelationship {
 
     private Integer current;
 
+    private Double normalCost;
+
 }

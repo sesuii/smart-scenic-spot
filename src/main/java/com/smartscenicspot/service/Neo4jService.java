@@ -19,7 +19,7 @@ public interface Neo4jService {
 
     boolean changeStatus(Long attractionId, Integer status);
 
-    boolean imitateCrowdChange(Map<String, String> changes);
+    boolean imitateCrowdChange(Map<String, Long> changes);
 
     BestRouteResultVo getMultipleBestPath(List<Long> attractionIds);
 

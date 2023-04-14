@@ -36,8 +36,8 @@ public class TourGroup extends AuditModel {
     @Column(columnDefinition = "decimal(10,6)")
     private Double latitude;
 
-    @Column(name = "group_size", columnDefinition = "int4 default 0")
-    private Integer groupSize;
+    @Column(name = "group_size", columnDefinition = "int4 default 1", nullable = false)
+    private Integer groupSize = 1;
 
     @Column(name = "group_limit_size", columnDefinition = "int4 default 100")
     private Integer groupLimitSize;

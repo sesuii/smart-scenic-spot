@@ -37,7 +37,7 @@ public class TrafficWarningTask {
 
     /**
      * 定时任务监测人流量变化，当超出承载量 90% 时自动推送景区公告
-     * 第一次延迟 1 分钟执行，之后每 5 分钟执行一次
+     * 第一次延迟1分钟执行，之后每5分钟执行一次
      */
     @Async
     @Scheduled(initialDelay = 1000, fixedRate = 1000 * 60 * 5)
@@ -50,6 +50,8 @@ public class TrafficWarningTask {
             NoticeDto newNotice = NoticeDto.builder()
                     .publishTime(new Date())
                     .publishWay("自动推送")
+                    .scope((byte) 0)
+                    .type("预警事件")
                     .subject(String.format(SUBJECT_TEMPLATE, node.getName()))
                     .content(String.format(CONTENT_TEMPLATE, formatter.format(new Date()),
                             node.getName(), node.getCurrent()))

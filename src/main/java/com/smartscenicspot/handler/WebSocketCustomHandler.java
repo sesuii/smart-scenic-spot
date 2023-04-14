@@ -1,10 +1,7 @@
 package com.smartscenicspot.handler;
 
 import com.smartscenicspot.service.WebSocketService;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.*;
 
 import javax.annotation.Resource;
 

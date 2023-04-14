@@ -23,7 +23,7 @@ public class TourGroupDto implements Serializable {
     private String groupIntro;
     private Double longitude;
     private Double latitude;
-    private Integer groupSize;
+    private Integer groupSize = 1;
     private Byte status;
     private String inviteCode;
 }

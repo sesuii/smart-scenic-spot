@@ -18,7 +18,7 @@ public interface WebSocketService {
 
     void handleClose(WebSocketSession session);
 
-    void handleMessage(WebSocketSession session, WebSocketMessage<?> message);
+    void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws IOException;
 
 
     /**
