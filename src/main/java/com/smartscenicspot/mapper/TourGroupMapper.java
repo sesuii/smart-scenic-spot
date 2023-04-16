@@ -15,6 +15,7 @@ public interface TourGroupMapper {
     TourGroupMapper INSTANCE = Mappers.getMapper(TourGroupMapper.class);
     TourGroup voToEntity(TourGroupVo tourGroupVo);
 
+    @BeanMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
     TourGroup dtoToEntity(TourGroupDto tourGroupDto);
 
     TourGroupDto toDto(TourGroup tourGroup);

@@ -85,9 +85,8 @@ public class TourGroupServiceImpl implements TourGroupService {
         tourGroupDto.setInviteCode(UniqueInvCodeUtil.generateInvCode());
         TourGroup tourGroup = TourGroupMapper.INSTANCE.dtoToEntity(tourGroupDto);
         tourGroup.setCreator(user);
-        user.setTourGroup(tourGroup);
         tourGroupRepository.save(tourGroup);
-        userRepository.save(user);
+        userRepository.updateTourGroupByOpenid(tourGroup, account);
         return TourGroupMapper.INSTANCE.toDto(tourGroup);
     }
 

@@ -71,7 +71,7 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     @Transactional(value = "pgqlTransactionManger")
     public PageVo<?> getAllVos(AttractionQueryDto attractionQueryDto) {
-        Attraction attraction = AttractionMapper.INSTANCE.QueryDtoToEntity(attractionQueryDto);
+        Attraction attraction = AttractionMapper.INSTANCE.queryDtoToEntity(attractionQueryDto);
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
         Page<Attraction> attractions = attractionRepository.findAll(Example.of(attraction, exampleMatcher),

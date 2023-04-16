@@ -70,9 +70,8 @@ public class User extends AuditModel {
     @ToString.Exclude
     private Showplace showplace;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "group_id")
-    @ToString.Exclude
     private TourGroup tourGroup;
 
     @ManyToMany(cascade = CascadeType.ALL)

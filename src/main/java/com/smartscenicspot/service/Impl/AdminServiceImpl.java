@@ -30,9 +30,12 @@ public class AdminServiceImpl implements AdminService {
     @Resource
     AdminRepository adminRepository;
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+
     public Map<String, String> toAdminLogin(AdminVo adminVo) {
         Admin admin = adminRepository.findAdminByAccount(adminVo.getUsername()).orElse(null);
-        if(admin == null) {
+        if(admin == null || !encoder.matches(adminVo.getPassword(), admin.getPassword())) {
             return null;
         }
         String token = JwtUtil.createJWT(admin.getAccount());
@@ -44,7 +47,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public boolean createAccount(AdminDto adminDto) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Admin admin = AdminMapper.INSTANCE.adminDtoToAdmin(adminDto);
         admin.setPassword(encoder.encode(adminDto.getPassword()));
         adminRepository.save(admin);

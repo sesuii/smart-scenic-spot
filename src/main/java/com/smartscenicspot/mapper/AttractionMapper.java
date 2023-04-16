@@ -28,9 +28,9 @@ public interface AttractionMapper {
     Attraction voToEntity(AttractionVo attractionVo);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public abstract Attraction partialUpdate(AttractionUpdateDto attractionUpdateDto, @MappingTarget Attraction attraction);
+    Attraction partialUpdate(AttractionUpdateDto attractionUpdateDto, @MappingTarget Attraction attraction);
 
-    Attraction QueryDtoToEntity(AttractionQueryDto attractionQueryDto);
+    Attraction queryDtoToEntity(AttractionQueryDto attractionQueryDto);
 
     Attraction toEntity(AttractionRouteVo attractionRouteVo);
 

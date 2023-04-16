@@ -57,17 +57,21 @@ public interface Neo4jAttractionRepository extends Neo4jRepository<AttractionNod
 
     @Modifying
     @Transactional
-    @Query("match (n1:Attraction)-[]-(a)\n" +
+    @Query("match (n1:Attraction) \n" +
+            "with collect(n1) as n1s\n" +
+            "unwind n1s as n1\n" +
+            "with [n in n1s] as n2s, n1\n" +
+            "unwind n2s as n2\n" +
             "CALL gds.shortestPath.yens.stream($projectionName, {\n" +
             "    sourceNode: ID(n1),\n" +
-            "    targetNode: ID(a),\n" +
+            "    targetNode: ID(n2),\n" +
             "    k: 3,\n" +
             "    relationshipWeightProperty: 'cost'\n" +
             "})\n" +
             "YIELD index, sourceNode, targetNode, totalCost, nodeIds\n" +
             "WITH index, sourceNode, targetNode, totalCost, nodeIds,\n" +
             "reduce(s = \"\", x IN nodeIds | s + case when s <> '' then ' ' else '' end + gds.util.asNode(x).attractionId) as viaPath\n" +
-            "WHERE totalCost > 0.0\n" +
+            "WHERE totalCost > 0.0 and sourceNode <> targetNode\n" +
             "MATCH (a1: Attraction)-[p:SHORTEST_PATH]->(a2:Attraction)\n" +
             "WHERE ID(a1) = sourceNode and ID(a2) = targetNode\n" +
             "SET p.costs = REDUCE(s = [], i IN RANGE(0, SIZE(p.costs) - 1) |\n" +

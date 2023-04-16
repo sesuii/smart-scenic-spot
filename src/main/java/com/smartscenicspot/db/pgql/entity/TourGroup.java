@@ -51,7 +51,7 @@ public class TourGroup extends AuditModel {
     @Column(name = "invite_code", columnDefinition = "varchar(20)")
     private String inviteCode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User creator;
 
     @OneToMany(mappedBy = "tourGroup", cascade = CascadeType.ALL)

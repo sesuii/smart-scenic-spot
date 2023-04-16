@@ -15,10 +15,11 @@ public interface RatingScoreMapper {
 
     RatingScoreMapper INSTANCE = Mappers.getMapper(RatingScoreMapper.class);
 
+    @Mapping(source = "attractionId", target = "attraction.id")
+    @Mapping(source = "userId", target = "user.id")
     RatingScore toEntity(RatingScoreDto ratingScoreDto);
 
     RatingScoreDto toDto(RatingScore ratingScore);
-
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     RatingScore partialUpdate(RatingScoreDto ratingScoreDto, @MappingTarget RatingScore ratingScore);
 

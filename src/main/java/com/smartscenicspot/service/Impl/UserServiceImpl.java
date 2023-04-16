@@ -50,11 +50,9 @@ public class UserServiceImpl implements UserService {
     RecommendationRepository recommendationRepository;
     @Resource
     InterestTagRepository interestTagRepository;
-    private final AttractionRepository attractionRepository;
 
-    public UserServiceImpl(AttractionRepository attractionRepository) {
-        this.attractionRepository = attractionRepository;
-    }
+    @Resource
+    AttractionRepository attractionRepository;
 
     /**
      * 从 Security 中拿出经过 WeChatAuthenticationProvider 验证的 openid

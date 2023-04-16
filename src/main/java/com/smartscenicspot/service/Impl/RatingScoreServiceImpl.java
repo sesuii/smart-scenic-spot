@@ -1,7 +1,9 @@
 package com.smartscenicspot.service.Impl;
 
 import com.smartscenicspot.db.pgql.entity.RatingScore;
+import com.smartscenicspot.db.pgql.entity.User;
 import com.smartscenicspot.db.pgql.repository.RatingScoreRepository;
+import com.smartscenicspot.db.pgql.repository.UserRepository;
 import com.smartscenicspot.dto.RatingScoreDto;
 import com.smartscenicspot.mapper.RatingScoreMapper;
 import com.smartscenicspot.service.RatingScoreService;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +36,21 @@ public class RatingScoreServiceImpl implements RatingScoreService {
 
     @Resource
     RatingScoreRepository ratingScoreRepository;
+    private final UserRepository userRepository;
+
+    public RatingScoreServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Override
     public boolean addNewRatingScore(RatingScoreDto ratingScoreDto) {
+        String openid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByOpenid(openid).orElse(null);
+        if(user == null) {
+            return false;
+        }
+        ratingScoreDto.setUserId(user.getId());
         RatingScore ratingScore = ratingScoreRepository.findByUser_IdAndAttraction_Id(
                 ratingScoreDto.getUserId(), ratingScoreDto.getAttractionId()
         ).orElse(null);

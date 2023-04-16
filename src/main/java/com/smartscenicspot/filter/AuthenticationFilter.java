@@ -76,15 +76,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String redisToken = (String)redisTemplate.opsForValue()
                 .get(RedisConstant.USER_PREFIX + account);
         boolean isAdmin = redisToken.startsWith(SecurityConstant.ADMIN_LABEL);
-        String storedToken = isAdmin ? redisToken.substring(SecurityConstant.ADMIN_LABEL.length())
-                : redisToken;
-        if(!token.equals(storedToken)) {
-            try {
-                throw new Exception("用户身份过期，请重新登录");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         Collection<GrantedAuthority> authorityCollection = null;
         if(isAdmin) {
             authorityCollection = Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
